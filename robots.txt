@@ -1,0 +1,4 @@
+# Şu an site "noindex" (index.html içinde). Domain ile canlıya alınca
+# index.html'deki noindex satırını sil ve buraya Sitemap satırını ekle.
+User-agent: *
+Allow: /
