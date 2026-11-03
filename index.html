@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Burçe Bayar — Graphic Designer</title>
+<meta name="description" content="Burçe Bayar — Graphic Designer & Social Media Designer portfolio. Branding, social media, reels covers, thumbnails, posters, PR.">
+<meta property="og:title" content="Burçe Bayar — Portfolio OS">
+<meta property="og:description" content="Graphic Designer & Social Media Designer · Izmir">
+<meta property="og:image" content="assets/img/full/s01.webp">
+<meta name="theme-color" content="#14061f">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Space+Grotesk:wght@400;500;700&family=VT323&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- BOOT SCREEN -->
+<div id="boot" aria-hidden="true">
+  <div class="boot-logo">Burçe<span>OS</span></div>
+  <div class="boot-bar"><i></i></div>
+  <div class="boot-txt">loading creativity… <span id="bootPct">0</span>%</div>
+  <div class="boot-skip">tıkla / click to skip</div>
+</div>
+
+<!-- DESKTOP -->
+<main id="desktop">
+  <div id="icons" role="list"></div>
+  <div id="windows"></div>
+  <div class="desk-sign">
+    <b>Burçe Bayar</b>
+    <span>Graphic Designer · Izmir</span>
+  </div>
+</main>
+
+<!-- START MENU -->
+<nav id="startMenu" hidden>
+  <div class="sm-side">BurçeOS</div>
+  <div class="sm-main">
+    <div class="sm-user"><img src="assets/img/avatar.webp" alt=""><div><b>Burçe Bayar</b><small>Graphic Designer</small></div></div>
+    <ul id="smList"></ul>
+  </div>
+</nav>
+
+<!-- TASKBAR -->
+<footer id="taskbar">
+  <button id="startBtn" aria-label="Start"><span class="flower">✿</span> Start</button>
+  <div id="tasks"></div>
+  <div class="tray">
+    <a href="https://www.behance.net/burebayar" target="_blank" rel="noopener" title="Behance">Bē</a>
+    <a id="trayLi" target="_blank" rel="noopener" title="LinkedIn">in</a>
+    <span id="clock">--:--</span>
+  </div>
+</footer>
+
+<!-- LIGHTBOX -->
+<div id="lightbox" hidden>
+  <button class="lb-close" aria-label="Kapat">✕</button>
+  <button class="lb-prev" aria-label="Önceki">‹</button>
+  <figure><img alt=""><figcaption></figcaption></figure>
+  <button class="lb-next" aria-label="Sonraki">›</button>
+</div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
