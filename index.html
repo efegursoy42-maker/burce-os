@@ -4,64 +4,75 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Burçe Bayar — Graphic Designer</title>
-<meta name="description" content="Burçe Bayar — Graphic Designer & Social Media Designer portfolio. Branding, social media, reels covers, thumbnails, posters, PR.">
+<meta name="description" content="Burçe Bayar — Graphic Designer & Social Media Manager portfolio. Branding, social media, Reels covers, thumbnails, posters, PR.">
+<!-- Domain ile canlıya alınca bu satırı SİL (şimdilik Google'da görünmesin): -->
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:type" content="website">
 <meta property="og:title" content="Burçe Bayar — Portfolio OS">
-<meta property="og:description" content="Graphic Designer & Social Media Designer · Izmir">
-<meta property="og:image" content="assets/img/full/s01.webp">
+<meta property="og:description" content="Graphic Designer & Social Media Manager · Izmir">
+<!-- Kendi adresinle değiştir (tam adres olmalı): -->
+<meta property="og:image" content="https://burce-os.vercel.app/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#14061f">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Space+Grotesk:wght@400;500;700&family=VT323&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
+<script>/* temayı ilk boyamadan önce uygula (titreme olmasın) */
+try{var w=localStorage.getItem("bos-wp")||"burce",m={burce:"burce",bliss:"xp",win10:"win10",cave:"win10"};document.documentElement.dataset.theme=m[w]||"burce";document.documentElement.dataset.wp=w}catch(e){}</script>
+<!-- Vercel Web Analytics (Vercel panelinde Analytics → Enable dedikten sonra çalışır) -->
+<script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
 
-<!-- BOOT SCREEN -->
 <div id="boot" aria-hidden="true">
   <div class="boot-logo">Burçe<span>OS</span></div>
   <div class="boot-bar"><i></i></div>
-  <div class="boot-txt">loading creativity… <span id="bootPct">0</span>%</div>
-  <div class="boot-skip">tıkla / click to skip</div>
+  <div class="boot-txt"><span data-t="boot">loading creativity…</span> <span id="bootPct">0</span>%</div>
+  <div class="boot-skip" data-t="skip">click to skip</div>
 </div>
 
-<!-- DESKTOP -->
 <main id="desktop">
   <div id="icons" role="list"></div>
   <div id="windows"></div>
-  <div class="desk-sign">
-    <b>Burçe Bayar</b>
-    <span>Graphic Designer · Izmir</span>
-  </div>
+  <div class="desk-sign"><b>Burçe Bayar</b><span data-t="sign">Graphic Designer · Izmir</span></div>
 </main>
 
-<!-- START MENU -->
+<nav id="ctx" hidden></nav>
+
 <nav id="startMenu" hidden>
   <div class="sm-side">BurçeOS</div>
   <div class="sm-main">
-    <div class="sm-user"><img src="assets/img/avatar.webp" alt=""><div><b>Burçe Bayar</b><small>Graphic Designer</small></div></div>
+    <div class="sm-user"><img src="assets/img/avatar.webp" alt=""><div><b>Burçe Bayar</b><small data-t="role">Graphic Designer</small></div></div>
     <ul id="smList"></ul>
   </div>
 </nav>
 
-<!-- TASKBAR -->
 <footer id="taskbar">
-  <button id="startBtn" aria-label="Start"><span class="flower">✿</span> Start</button>
+  <button id="startBtn" aria-label="Start"><span class="sb-logo"><span class="flower">✿</span><svg class="winlogo" viewBox="0 0 16 16"><path d="M0 2.3 6.5 1.4v6.2H0zM7.3 1.3 16 0v7.6H7.3zM0 8.4h6.5v6.2L0 13.7zM7.3 8.4H16V16l-8.7-1.2z"/></svg></span><span class="sb-txt">Start</span></button>
   <div id="tasks"></div>
   <div class="tray">
+    <button id="langBtn" title="Türkçe / English">EN</button>
+    <button id="sndBtn" title="Sound"></button>
     <a href="https://www.behance.net/burebayar" target="_blank" rel="noopener" title="Behance">Bē</a>
     <a id="trayLi" target="_blank" rel="noopener" title="LinkedIn">in</a>
     <span id="clock">--:--</span>
   </div>
 </footer>
 
-<!-- LIGHTBOX -->
 <div id="lightbox" hidden>
-  <button class="lb-close" aria-label="Kapat">✕</button>
-  <button class="lb-prev" aria-label="Önceki">‹</button>
+  <button class="lb-close" aria-label="Close">✕</button>
+  <button class="lb-prev" aria-label="Previous">‹</button>
   <figure><img alt=""><figcaption></figcaption></figure>
-  <button class="lb-next" aria-label="Sonraki">›</button>
+  <button class="lb-next" aria-label="Next">›</button>
 </div>
 
+<canvas id="saver" hidden></canvas>
+
+<noscript><p style="padding:24px">Burçe Bayar — Graphic Designer · bburcebayar@gmail.com · behance.net/burebayar</p></noscript>
 <script src="data.js"></script>
 <script src="app.js"></script>
 </body>

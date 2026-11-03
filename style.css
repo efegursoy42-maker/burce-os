@@ -11,35 +11,53 @@ html,body{height:100%;overflow:hidden;background:var(--ink);color:var(--paper);f
 button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 a{color:inherit}
 img{display:block;max-width:100%}
+[hidden]{display:none!important}
+
+/* ---------- İMLEÇLER (sadece fare olan cihazlar) ----------
+   BurçeOS duvar kağıdı → çiçek imleç | XP / Windows 10 → retro piksel ok */
+@media (hover:hover) and (pointer:fine){
+  [data-theme=burce],[data-theme=burce] body{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='26' viewBox='0 0 26 26'%3E%3Cg transform='translate%2813 13%29' fill='%23e815b2' stroke='%2314061f' stroke-width='1.2'%3E%3Cellipse rx='3.6' ry='6' cy='-6' transform='rotate%280%29'/%3E%3Cellipse rx='3.6' ry='6' cy='-6' transform='rotate%2872%29'/%3E%3Cellipse rx='3.6' ry='6' cy='-6' transform='rotate%28144%29'/%3E%3Cellipse rx='3.6' ry='6' cy='-6' transform='rotate%28216%29'/%3E%3Cellipse rx='3.6' ry='6' cy='-6' transform='rotate%28288%29'/%3E%3Ccircle r='3.2' fill='%23ffd84d'/%3E%3C/g%3E%3C/svg%3E") 13 13,auto}
+  [data-theme=burce] :is(a,button,.icon,.thumb,.case-stack img,#boot,.titlebar){cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3E%3Cg transform='translate%2815 15%29' fill='%23b7f36b' stroke='%2314061f' stroke-width='1.2'%3E%3Cellipse rx='4.2' ry='7' cy='-7' transform='rotate%280%29'/%3E%3Cellipse rx='4.2' ry='7' cy='-7' transform='rotate%2872%29'/%3E%3Cellipse rx='4.2' ry='7' cy='-7' transform='rotate%28144%29'/%3E%3Cellipse rx='4.2' ry='7' cy='-7' transform='rotate%28216%29'/%3E%3Cellipse rx='4.2' ry='7' cy='-7' transform='rotate%28288%29'/%3E%3Ccircle r='3.2' fill='%23e815b2'/%3E%3C/g%3E%3C/svg%3E") 15 15,pointer}
+  [data-theme=xp],[data-theme=xp] body,[data-theme=win10],[data-theme=win10] body{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='24' viewBox='0 0 22 24' shape-rendering='crispEdges'%3E%3Cpath d='M1 1v15l4-4 3 6 2-1-3-6h5z' fill='%23fff' stroke='%23000' stroke-width='1.5' stroke-linejoin='miter'/%3E%3C/svg%3E") 1 1,auto}
+  :is([data-theme=xp],[data-theme=win10]) :is(a,button,.icon,.thumb,.case-stack img,#boot,.titlebar){cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='26' viewBox='0 0 26 26' shape-rendering='crispEdges'%3E%3Cpath d='M1 1v15l4-4 3 6 2-1-3-6h5z' fill='%23fff' stroke='%23000' stroke-width='1.5'/%3E%3Cpath d='M14 15h2v-1h2v1h1v-1h2v1h1v3h-1v1h-1v1h-1v1h-1v1h-1v-1h-1v-1h-1v-1h-1v-1h-1v-3h1z' fill='%23e815b2' stroke='%23000' stroke-width='1'/%3E%3C/svg%3E") 1 1,pointer}
+  .wbody p,.about li{cursor:text!important}
+}
 
 /* ---------- BOOT ---------- */
 #boot{position:fixed;inset:0;z-index:9999;background:radial-gradient(circle at 50% 40%,#3b0f63,var(--ink) 65%);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;cursor:pointer;transition:opacity .5s}
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;transition:opacity .5s}
 #boot.hide{opacity:0;pointer-events:none}
-.boot-logo{font-family:var(--display);font-size:clamp(48px,9vw,110px);color:var(--lime);
-  text-shadow:4px 4px 0 var(--pink),8px 8px 0 var(--violet);letter-spacing:1px}
+.boot-logo{font-family:var(--display);font-size:clamp(48px,9vw,110px);color:var(--lime);text-shadow:4px 4px 0 var(--pink),8px 8px 0 var(--violet);letter-spacing:1px}
 .boot-logo span{color:var(--pink);text-shadow:4px 4px 0 var(--lime)}
 .boot-bar{width:min(320px,70vw);height:22px;border:2px solid var(--paper);padding:3px;border-radius:4px}
 .boot-bar i{display:block;height:100%;width:0;background:repeating-linear-gradient(90deg,var(--pink) 0 14px,transparent 14px 18px);transition:width .1s}
 .boot-txt{font-family:var(--pixel);font-size:24px;color:#cdb6ff}
 .boot-skip{font-family:var(--pixel);font-size:18px;opacity:.5}
 
-/* ---------- DESKTOP ---------- */
-#desktop{position:fixed;inset:0 0 48px 0;background:url(assets/img/wallpaper.webp) center/cover no-repeat,var(--ink)}
-#desktop::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(20,6,31,.65),rgba(20,6,31,0) 30%);pointer-events:none}
-#icons{position:absolute;z-index:2;top:16px;left:16px;bottom:16px;display:grid;grid-auto-flow:column;
-  grid-template-rows:repeat(auto-fill,104px);grid-auto-columns:96px;gap:6px 10px}
-.icon{display:flex;flex-direction:column;align-items:center;gap:6px;padding:8px 4px;border-radius:8px;text-align:center;
-  border:1px dashed transparent;transition:background .15s;user-select:none}
-.icon:hover{background:rgba(183,243,107,.12)}
-.icon:focus-visible,.icon.sel{background:rgba(232,21,178,.25);border-color:var(--pink);outline:none}
-.icon svg,.icon .glyph{width:54px;height:46px;filter:drop-shadow(2px 3px 0 rgba(0,0,0,.45));transition:transform .2s}
+/* ---------- DESKTOP + DUVAR KAĞITLARI ---------- */
+#desktop{position:fixed;inset:0 0 48px 0;background:var(--ink) center/cover no-repeat;transition:background-image .3s}
+[data-wp=burce] #desktop{background-image:url(assets/img/wp/burce.webp)}
+[data-wp=bliss] #desktop{background-image:url(assets/img/wp/bliss.webp)}
+[data-wp=win10] #desktop{background-image:url(assets/img/wp/win10.webp)}
+[data-wp=cave]  #desktop{background-image:url(assets/img/wp/cave.webp)}
+#desktop::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(20,6,31,.6),rgba(20,6,31,0) 30%);pointer-events:none}
+[data-theme=xp] #desktop::after,[data-theme=win10] #desktop::after{background:linear-gradient(90deg,rgba(0,0,0,.25),rgba(0,0,0,0) 25%)}
+
+#icons{position:absolute;inset:0;z-index:2}
+.icon{position:absolute;width:92px;display:flex;flex-direction:column;align-items:center;gap:6px;padding:8px 4px;border-radius:8px;text-align:center;
+  border:1px dashed transparent;transition:background .15s,left .25s,top .25s;user-select:none;-webkit-user-drag:none;touch-action:none;text-decoration:none}
+.icon:hover{background:rgba(183,243,107,.14)}
+.icon:focus-visible{background:rgba(232,21,178,.25);border-color:var(--pink);outline:none}
+.icon.dragging{transition:none;z-index:50;opacity:.85;background:rgba(232,21,178,.22);border-color:var(--pink)}
+.icon svg,.icon .glyph{width:54px;height:46px;filter:drop-shadow(2px 3px 0 rgba(0,0,0,.45));transition:transform .2s;pointer-events:none}
 .icon:hover svg,.icon:hover .glyph{transform:translateY(-3px) rotate(-3deg)}
-.icon span{font-size:12.5px;line-height:1.15;font-weight:500;text-shadow:0 1px 3px #000,0 0 6px #000}
+.icon span{font-size:12.5px;line-height:1.15;font-weight:500;text-shadow:0 1px 3px #000,0 0 6px #000;pointer-events:none}
 .glyph{display:grid;place-items:center;border-radius:12px;font-weight:700;font-size:24px}
+#icons.refresh .icon{animation:blink .45s}
+@keyframes blink{0%{opacity:1}40%{opacity:0}100%{opacity:1}}
 .desk-sign{position:absolute;right:24px;bottom:18px;z-index:1;text-align:right;font-family:var(--pixel);line-height:1}
 .desk-sign b{display:block;font-family:var(--display);font-weight:400;font-size:30px;color:var(--lime);text-shadow:3px 3px 0 var(--pink)}
-.desk-sign span{font-size:22px;color:#e9dcff}
+.desk-sign span{font-size:22px;color:#e9dcff;text-shadow:0 1px 4px #000}
 
 /* ---------- WINDOWS ---------- */
 .win{position:absolute;display:flex;flex-direction:column;min-width:320px;min-height:220px;background:var(--win);
@@ -49,14 +67,13 @@ img{display:block;max-width:100%}
 .win.active{border-color:var(--pink)}
 .win.min{display:none}
 .win.max{inset:0!important;width:auto!important;height:auto!important;border-radius:0;resize:none}
-.titlebar{display:flex;align-items:center;gap:10px;height:38px;padding:0 6px 0 12px;flex:none;cursor:grab;
+.titlebar{display:flex;align-items:center;gap:10px;height:38px;padding:0 6px 0 12px;flex:none;
   background:linear-gradient(90deg,var(--violet),var(--pink));user-select:none}
 .win:not(.active) .titlebar{background:linear-gradient(90deg,#3a2356,#4a2b5e)}
-.titlebar:active{cursor:grabbing}
 .titlebar .t{flex:1;font-family:var(--pixel);font-size:22px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .titlebar .dot{width:12px;height:12px;border-radius:50%;background:var(--c,var(--lime));box-shadow:0 0 0 2px rgba(0,0,0,.25)}
 .tb-btns{display:flex;gap:4px}
-.tb-btns button{width:28px;height:26px;border-radius:6px;background:rgba(20,6,31,.35);font-size:14px;line-height:1}
+.tb-btns button{width:28px;height:26px;border-radius:6px;background:rgba(20,6,31,.35);font-size:14px;line-height:1;display:grid;place-items:center}
 .tb-btns button:hover{background:rgba(20,6,31,.7)}
 .tb-btns .x:hover{background:var(--rose)}
 .toolbar{display:flex;gap:14px;align-items:center;padding:6px 12px;font-size:12px;color:#bfa8e6;border-bottom:1px solid var(--winBorder);flex:none}
@@ -64,7 +81,6 @@ img{display:block;max-width:100%}
 .wbody{flex:1;overflow:auto;scrollbar-color:var(--violet) transparent}
 .statusbar{flex:none;padding:4px 12px;font-family:var(--pixel);font-size:16px;color:#bfa8e6;border-top:1px solid var(--winBorder)}
 
-/* folder grid */
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;padding:16px}
 .thumb{position:relative;aspect-ratio:16/9;border-radius:8px;overflow:hidden;background:#000;border:2px solid transparent;transition:transform .2s,border-color .2s}
 .thumb img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
@@ -72,15 +88,13 @@ img{display:block;max-width:100%}
 .thumb:hover img{transform:scale(1.05)}
 .thumb small{position:absolute;left:8px;bottom:6px;font-family:var(--pixel);font-size:16px;background:rgba(20,6,31,.8);padding:1px 7px;border-radius:4px}
 
-/* case study */
 .case-head{padding:28px 28px 18px;background:linear-gradient(135deg,rgba(146,45,230,.35),rgba(232,21,178,.15))}
 .case-head h2{font-family:var(--display);font-weight:400;font-size:clamp(28px,4vw,46px);color:var(--lime);text-shadow:3px 3px 0 var(--pink);line-height:1.05}
 .case-head .sub{font-family:var(--pixel);font-size:20px;color:#ffc6ec;margin:6px 0 10px}
 .case-head p{max-width:640px;font-size:14px;line-height:1.55;color:#e8dcff}
 .case-stack{display:flex;flex-direction:column;gap:10px;padding:10px}
-.case-stack img{width:100%;border-radius:6px;cursor:zoom-in;background:#000}
+.case-stack img{width:100%;border-radius:6px;background:#000}
 
-/* about / notepad */
 .about{display:grid;grid-template-columns:180px 1fr;gap:24px;padding:24px;font-size:14px;line-height:1.55}
 .about .ava{width:180px;aspect-ratio:1;border-radius:50%;border:5px solid var(--pink);box-shadow:6px 6px 0 var(--lime);object-fit:cover}
 .about h2{font-family:var(--display);font-weight:400;font-size:34px;color:var(--lime);line-height:1}
@@ -90,46 +104,65 @@ img{display:block;max-width:100%}
 .about li{margin-bottom:8px}
 .about li b{color:var(--orange);font-weight:500;margin-right:6px}
 .about li em{display:block;font-style:normal;color:#cbb8ea;font-size:13px}
+.about .muted{color:#cbb8ea}
 .links{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
 .btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:8px;background:var(--lime);color:var(--ink);font-weight:700;text-decoration:none;font-size:13px;box-shadow:3px 3px 0 var(--pink)}
 .btn:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--pink)}
 .btn.alt{background:var(--paper)}
-
-/* trash */
 .empty{display:grid;place-items:center;height:100%;padding:30px;text-align:center;font-family:var(--pixel);font-size:22px;color:#bfa8e6}
+
+/* kişiselleştir */
+.wp-hint{padding:16px 18px 0;font-size:13px;color:#cbb8ea}
+.wp-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;padding:16px 18px 18px}
+.wp{border-radius:8px;overflow:hidden;border:3px solid transparent;background:#000;text-align:left;transition:border-color .15s,transform .15s}
+.wp img{aspect-ratio:16/9;width:100%;object-fit:cover}
+.wp span{display:block;padding:6px 10px;font-size:13px;background:rgba(255,255,255,.06)}
+.wp:hover{transform:translateY(-2px);border-color:rgba(183,243,107,.5)}
+.wp.on{border-color:var(--lime)}
+
+/* sağ tık menüsü */
+#ctx{position:fixed;z-index:8000;min-width:220px;padding:5px;background:var(--win);border:2px solid var(--pink);border-radius:8px;box-shadow:6px 6px 0 rgba(0,0,0,.45);font-size:13px}
+#ctx button{display:block;width:100%;text-align:left;padding:7px 12px;border-radius:5px;white-space:nowrap}
+#ctx button.sub{padding-left:24px;font-size:12.5px;color:#d9c8f5}
+#ctx button:hover{background:var(--violet);color:#fff}
+#ctx hr{border:0;height:1px;background:var(--winBorder);margin:4px 2px}
+#ctx .ctx-lbl{padding:6px 12px 2px;font-family:var(--pixel);font-size:16px;color:var(--pink)}
+
+/* ekran koruyucu */
+#saver{position:fixed;inset:0;z-index:9500;background:#14061f;width:100vw;height:100vh}
 
 /* ---------- TASKBAR ---------- */
 #taskbar{position:fixed;left:0;right:0;bottom:0;height:48px;z-index:5000;display:flex;align-items:center;gap:8px;padding:0 8px;
   background:rgba(28,13,46,.92);backdrop-filter:blur(10px);border-top:2px solid var(--violet)}
 #startBtn{height:36px;padding:0 16px 0 10px;border-radius:8px;background:var(--lime);color:var(--ink);font-weight:700;display:flex;align-items:center;gap:6px;box-shadow:2px 2px 0 var(--pink)}
 #startBtn .flower{color:var(--pink);font-size:20px}
+#startBtn .winlogo{display:none;width:16px;height:16px;fill:currentColor}
 #startBtn.on{background:var(--pink);color:#fff}
 #tasks{flex:1;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
-.task{height:34px;max-width:190px;padding:0 12px;border-radius:7px;background:rgba(255,255,255,.07);font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-bottom:3px solid transparent}
+.task{height:34px;max-width:190px;padding:0 12px;border-radius:7px;background:rgba(255,255,255,.07);font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-bottom:3px solid transparent;flex:none}
 .task.active{background:rgba(232,21,178,.25);border-bottom-color:var(--pink)}
-.tray{display:flex;align-items:center;gap:10px;padding:0 6px}
-.tray a{width:30px;height:30px;display:grid;place-items:center;border-radius:7px;background:rgba(255,255,255,.08);font-weight:700;font-size:13px;text-decoration:none}
-.tray a:hover{background:var(--violet)}
+.tray{display:flex;align-items:center;gap:8px;padding:0 6px}
+.tray a,.tray button{width:30px;height:30px;display:grid;place-items:center;border-radius:7px;background:rgba(255,255,255,.08);font-weight:700;font-size:13px;text-decoration:none}
+.tray a:hover,.tray button:hover{background:var(--violet)}
+#langBtn{font-family:var(--pixel);font-size:18px;width:34px}
 #clock{font-family:var(--pixel);font-size:22px;min-width:52px;text-align:right}
 
 /* ---------- START MENU ---------- */
-#startMenu{position:fixed;left:8px;bottom:56px;z-index:5001;display:flex;width:300px;border-radius:12px;overflow:hidden;
+#startMenu{position:fixed;left:8px;bottom:56px;z-index:5001;display:flex;width:300px;max-height:calc(100vh - 70px);border-radius:12px;overflow:hidden;
   background:var(--win);border:2px solid var(--pink);box-shadow:8px 8px 0 rgba(0,0,0,.5);animation:pop .18s}
-#startMenu[hidden]{display:none}
 .sm-side{writing-mode:vertical-rl;transform:rotate(180deg);background:linear-gradient(var(--pink),var(--violet));padding:12px 6px;font-family:var(--display);font-size:22px;color:var(--lime)}
-.sm-main{flex:1}
+.sm-main{flex:1;overflow:auto}
 .sm-user{display:flex;gap:10px;align-items:center;padding:14px;border-bottom:1px solid var(--winBorder)}
 .sm-user img{width:44px;height:44px;border-radius:50%;border:2px solid var(--lime);object-fit:cover}
 .sm-user small{display:block;color:#bfa8e6;font-size:12px}
 #smList{list-style:none;padding:6px}
-#smList button,#smList a{display:flex;align-items:center;gap:10px;width:100%;padding:8px 10px;border-radius:7px;font-size:13.5px;text-decoration:none;text-align:left}
+#smList button,#smList a{display:flex;align-items:center;gap:10px;width:100%;padding:7px 10px;border-radius:7px;font-size:13.5px;text-decoration:none;text-align:left}
 #smList button:hover,#smList a:hover{background:var(--violet)}
 #smList i{width:12px;height:12px;border-radius:3px;flex:none}
-#smList .sep{height:1px;background:var(--winBorder);margin:6px 4px}
+#smList .sep{height:1px;background:var(--winBorder);margin:5px 4px}
 
 /* ---------- LIGHTBOX ---------- */
 #lightbox{position:fixed;inset:0;z-index:9000;background:rgba(10,3,16,.94);display:flex;align-items:center;justify-content:center}
-#lightbox[hidden]{display:none}
 #lightbox figure{max-width:92vw;max-height:88vh;text-align:center}
 #lightbox img{max-width:92vw;max-height:82vh;margin:auto;border-radius:6px;box-shadow:0 20px 80px rgba(0,0,0,.7)}
 #lightbox figcaption{font-family:var(--pixel);font-size:20px;margin-top:10px;color:#cdb6ff}
@@ -138,28 +171,119 @@ img{display:block;max-width:100%}
 .lb-close{top:16px;right:16px;font-size:20px}
 .lb-prev{left:16px}.lb-next{right:16px}
 
-/* ---------- MOBILE: telefon ana ekranı ---------- */
+/* =========================================================
+   TEMA: WINDOWS XP  (Bliss)
+   ========================================================= */
+[data-theme=xp]{--win:#1f2430;--winBorder:#3a4256}
+[data-theme=xp] .win{border:3px solid #0831d9;border-top:0;border-radius:8px 8px 0 0;box-shadow:4px 6px 18px rgba(0,0,0,.45)}
+[data-theme=xp] .win:not(.active){border-color:#7a96df}
+[data-theme=xp] .titlebar{height:32px;background:linear-gradient(#0997ff,#0053ee 8%,#0050ee 40%,#06f 88%,#06f 93%,#005bff 95%,#003dd7 96%);border-radius:7px 7px 0 0}
+[data-theme=xp] .win:not(.active) .titlebar{background:linear-gradient(#a6caf0,#7a96df 40%,#8aa5e6)}
+[data-theme=xp] .titlebar .t{font-family:Tahoma,'Trebuchet MS',sans-serif;font-weight:700;font-size:14px;text-shadow:1px 1px #0a1883}
+[data-theme=xp] .titlebar .dot{border-radius:3px}
+[data-theme=xp] .tb-btns button{width:22px;height:22px;border:1px solid #fff;border-radius:3px;background:linear-gradient(135deg,#5a8cf7,#2563dc);font-size:12px;font-weight:700}
+[data-theme=xp] .tb-btns .x{background:linear-gradient(135deg,#e7765a,#c23a14)}
+[data-theme=xp] .toolbar{background:#ece9d8;color:#222;border-color:#c8c4b0}
+[data-theme=xp] .toolbar .path{background:#fff;color:#222;border:1px solid #7f9db9;border-radius:0}
+[data-theme=xp] .statusbar{background:#ece9d8;color:#333;border-color:#c8c4b0}
+[data-theme=xp] #taskbar{height:48px;padding:0;border-top:0;backdrop-filter:none;
+  background:linear-gradient(#1f2f86 0,#3165c4 3%,#3682e5 6%,#4490e6 10%,#3883e5 12%,#2b71e0 15%,#2663da 18%,#235bd6 20%,#2258d5 23%,#2157d6 38%,#245ddb 54%,#2562df 86%,#245fdc 89%,#2158d4 92%,#1d4ec0 95%,#1941a5 98%)}
+[data-theme=xp] #startBtn{height:100%;padding:0 26px 0 12px;border-radius:0 14px 14px 0;box-shadow:inset -2px 0 4px rgba(0,0,0,.25);
+  background:linear-gradient(#3c8f3c,#5bc05b 10%,#3a9a3a 50%,#2f7f2f);color:#fff;font-family:'Trebuchet MS',Tahoma,sans-serif;font-style:italic;font-size:20px;text-transform:lowercase;text-shadow:1px 1px 2px #1a3c1a}
+[data-theme=xp] #startBtn.on{background:linear-gradient(#2f6f2f,#3d8f3d)}
+[data-theme=xp] #startBtn .flower{display:none}
+[data-theme=xp] #startBtn .winlogo{display:block;width:20px;height:20px}
+[data-theme=xp] .task{background:#3c81f3;border:1px solid #1c4fb8;border-radius:3px;color:#fff;font-family:Tahoma,sans-serif;font-size:12px}
+[data-theme=xp] .task.active{background:#1e52b7;border-bottom-color:#1c4fb8}
+[data-theme=xp] .tray{height:100%;padding:0 10px;background:linear-gradient(#0c59b9,#139ee9 6%,#18b5f2 10%,#139beb 14%,#1290e8 19%,#0d8dea 63%,#0d9ff1 81%,#0f9eed 88%,#119be9 91%,#1392e2 94%,#137ed7 97%,#095bc9);border-left:1px solid #092e6c}
+[data-theme=xp] .tray a,[data-theme=xp] .tray button{background:transparent}
+[data-theme=xp] .tray a:hover,[data-theme=xp] .tray button:hover{background:rgba(255,255,255,.2)}
+[data-theme=xp] #clock{font-family:Tahoma,sans-serif;font-size:12px}
+[data-theme=xp] #startMenu{border:2px solid #0831d9;border-radius:8px 8px 0 0;box-shadow:4px 4px 12px rgba(0,0,0,.5);background:#fff;color:#222}
+[data-theme=xp] .sm-side{background:linear-gradient(#1868ce,#0e4fb5);color:#fff;font-family:'Trebuchet MS',sans-serif;font-style:italic;font-weight:700}
+[data-theme=xp] .sm-user{background:linear-gradient(#1868ce,#3e8be3);color:#fff;border:0}
+[data-theme=xp] .sm-user small{color:#dfeaff}
+[data-theme=xp] #smList button:hover,[data-theme=xp] #smList a:hover{background:#316ac5;color:#fff}
+[data-theme=xp] #smList .sep{background:#d6dff7}
+[data-theme=xp] #ctx{background:#fff;color:#222;border:1px solid #aca899;border-radius:0;box-shadow:2px 2px 4px rgba(0,0,0,.4);font-family:Tahoma,sans-serif;font-size:12px}
+[data-theme=xp] #ctx button{border-radius:0}
+[data-theme=xp] #ctx button.sub{color:#444}
+[data-theme=xp] #ctx button:hover{background:#316ac5}
+[data-theme=xp] #ctx hr{background:#aca899}
+[data-theme=xp] #ctx .ctx-lbl{color:#0831d9;font-family:Tahoma,sans-serif;font-size:11px;font-weight:700}
+[data-theme=xp] .icon span{font-family:Tahoma,sans-serif;font-size:12px;text-shadow:1px 1px 1px #000}
+[data-theme=xp] .icon:hover{background:rgba(49,106,197,.35)}
+
+/* =========================================================
+   TEMA: WINDOWS 10  (Hero, Cave)
+   ========================================================= */
+[data-theme=win10]{--w10:#0078d7;--win:#1c1c1c;--winBorder:#333}
+[data-theme=win10] .win{border:1px solid #444;border-radius:0;box-shadow:0 12px 40px rgba(0,0,0,.55);animation-duration:.15s}
+[data-theme=win10] .win.active{border-color:var(--w10)}
+[data-theme=win10] .titlebar{height:32px;padding:0 0 0 12px;background:#1f1f1f}
+[data-theme=win10] .win:not(.active) .titlebar{background:#2b2b2b;color:#999}
+[data-theme=win10] .titlebar .t{font-family:'Segoe UI',system-ui,sans-serif;font-size:12.5px}
+[data-theme=win10] .titlebar .dot{width:14px;height:14px;border-radius:2px;box-shadow:none}
+[data-theme=win10] .tb-btns{gap:0;align-self:stretch}
+[data-theme=win10] .tb-btns button{width:46px;height:100%;border-radius:0;background:transparent;font-size:13px}
+[data-theme=win10] .tb-btns button:hover{background:rgba(255,255,255,.1)}
+[data-theme=win10] .tb-btns .x:hover{background:#e81123}
+[data-theme=win10] .toolbar{background:#2b2b2b;border-color:#3a3a3a;color:#ccc;font-family:'Segoe UI',system-ui,sans-serif}
+[data-theme=win10] .toolbar .path{border-radius:0;background:#1a1a1a;border:1px solid #3a3a3a}
+[data-theme=win10] .statusbar{background:#202020;border-color:#3a3a3a;color:#aaa;font-family:'Segoe UI',system-ui,sans-serif;font-size:12px}
+[data-theme=win10] #taskbar{height:48px;padding:0;gap:0;background:rgba(16,16,16,.88);border-top:0;backdrop-filter:blur(14px)}
+[data-theme=win10] #startBtn{width:48px;height:48px;padding:0;justify-content:center;border-radius:0;background:transparent;box-shadow:none;color:#fff}
+[data-theme=win10] #startBtn:hover{background:rgba(255,255,255,.1)}
+[data-theme=win10] #startBtn.on{background:rgba(255,255,255,.15);color:var(--w10)}
+[data-theme=win10] #startBtn .flower,[data-theme=win10] #startBtn .sb-txt{display:none}
+[data-theme=win10] #startBtn .winlogo{display:block}
+[data-theme=win10] #tasks{gap:2px;padding-left:4px}
+[data-theme=win10] .task{height:48px;border-radius:0;background:transparent;border-bottom:2px solid #9a9a9a;font-family:'Segoe UI',system-ui,sans-serif;font-size:12px}
+[data-theme=win10] .task:hover{background:rgba(255,255,255,.08)}
+[data-theme=win10] .task.active{background:rgba(255,255,255,.14);border-bottom-color:#4cc2ff}
+[data-theme=win10] .tray a,[data-theme=win10] .tray button{background:transparent;border-radius:0}
+[data-theme=win10] .tray a:hover,[data-theme=win10] .tray button:hover{background:rgba(255,255,255,.1)}
+[data-theme=win10] #clock{font-family:'Segoe UI',system-ui,sans-serif;font-size:12px;padding-right:6px}
+[data-theme=win10] #startMenu{left:0;bottom:48px;border:0;border-radius:0;background:rgba(31,31,31,.96);backdrop-filter:blur(14px);box-shadow:0 0 30px rgba(0,0,0,.5);animation-duration:.12s}
+[data-theme=win10] .sm-side{background:var(--w10);color:#fff;font-family:'Segoe UI',system-ui,sans-serif;font-weight:600;font-size:16px}
+[data-theme=win10] .sm-user{border-color:#333}
+[data-theme=win10] .sm-user img{border-color:var(--w10)}
+[data-theme=win10] #smList button,[data-theme=win10] #smList a{border-radius:0;font-family:'Segoe UI',system-ui,sans-serif}
+[data-theme=win10] #smList button:hover,[data-theme=win10] #smList a:hover{background:rgba(255,255,255,.1)}
+[data-theme=win10] #smList .sep{background:#333}
+[data-theme=win10] #ctx{background:#2b2b2b;border:1px solid #444;border-radius:0;box-shadow:2px 4px 10px rgba(0,0,0,.5);font-family:'Segoe UI',system-ui,sans-serif;font-size:12.5px}
+[data-theme=win10] #ctx button{border-radius:0}
+[data-theme=win10] #ctx button:hover{background:#414141}
+[data-theme=win10] #ctx hr{background:#444}
+[data-theme=win10] #ctx .ctx-lbl{color:#4cc2ff;font-family:'Segoe UI',system-ui,sans-serif;font-size:11px}
+[data-theme=win10] .icon{border-radius:0}
+[data-theme=win10] .icon span{font-family:'Segoe UI',system-ui,sans-serif;font-size:12px}
+[data-theme=win10] .icon:hover{background:rgba(255,255,255,.14)}
+[data-theme=win10] .icon.dragging{background:rgba(0,120,215,.35);border-color:var(--w10)}
+
+/* ---------- MOBİL: telefon ana ekranı ---------- */
 @media (max-width:760px){
   #desktop{inset:0 0 72px 0}
-  #desktop::after{background:rgba(20,6,31,.45)}
-  #icons{position:relative;top:auto;left:auto;bottom:auto;padding:70px 18px 20px;display:grid;grid-auto-flow:row;
-    grid-template-columns:repeat(4,1fr);grid-template-rows:none;grid-auto-rows:auto;gap:18px 8px;height:100%;overflow-y:auto;align-content:start}
-  .toolbar{display:none}
-  .icon{padding:4px}
+  #desktop::after,[data-theme] #desktop::after{background:rgba(0,0,0,.35)}
+  #icons{position:relative;inset:auto;padding:70px 18px 40px;display:grid;grid-template-columns:repeat(4,1fr);gap:18px 8px;height:100%;overflow-y:auto;align-content:start}
+  .icon{position:static;width:auto;padding:4px;touch-action:auto}
   .icon span{font-size:11px}
+  .toolbar{display:none}
   .desk-sign{top:18px;bottom:auto;left:0;right:0;text-align:center}
   .desk-sign b{font-size:26px}.desk-sign span{display:none}
-  .win{position:fixed!important;inset:0 0 72px 0!important;width:auto!important;height:auto!important;border-radius:0;resize:none;min-width:0;border:0}
-  .titlebar{height:48px}
+  .win{position:fixed!important;inset:0 0 72px 0!important;width:auto!important;height:auto!important;border-radius:0!important;resize:none;min-width:0;border:0!important}
+  .titlebar{height:48px!important;border-radius:0!important}
   .tb-btns .mn,.tb-btns .mx{display:none}
-  .tb-btns button{width:40px;height:36px;font-size:18px}
-  #taskbar{height:72px;justify-content:space-between;padding:0 14px 8px}
+  .tb-btns button{width:44px!important;height:36px!important;font-size:18px}
+  #taskbar{height:72px!important;justify-content:space-between;padding:0 10px 8px!important}
   #tasks{display:none}
-  .tray a{width:42px;height:42px;font-size:16px}
-  .about{grid-template-columns:1fr;text-align:left}
+  .tray{height:auto!important;background:none!important;border:0!important}
+  .tray a,.tray button{width:40px;height:40px;font-size:15px}
+  #startBtn{height:46px!important}
+  .about{grid-template-columns:1fr}
   .about .ava{width:130px}
-  .grid{grid-template-columns:1fr;padding:12px}
+  .grid,.wp-grid{grid-template-columns:1fr;padding:12px}
   .lb-prev,.lb-next{bottom:20px;top:auto}
-  #startMenu{left:8px;right:8px;width:auto;bottom:80px}
+  #startMenu{left:8px!important;right:8px;width:auto;bottom:80px!important}
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
