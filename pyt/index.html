@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pick Your Toxic — Choose your poison.</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="Pick Your Toxic — a concept cocktail bar brand by Burçe Bayar.">
+<meta name="theme-color" content="#10100F">
+<link rel="icon" href="img/logo.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=League+Gothic&family=Barlow+Condensed:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="pyt.css">
+</head>
+<body>
+
+<header class="nav">
+  <a href="#top" class="nav-logo" aria-label="Pick Your Toxic"><img src="img/logo.webp" alt="Pick Your Toxic"></a>
+  <nav id="navLinks">
+    <button data-open-menu>Menu</button>
+    <a href="#toxic">Choose</a>
+    <a href="#about">About</a>
+    <a href="#events">Events</a>
+    <a href="#contact">Contact</a>
+  </nav>
+  <button class="burger" id="burger" aria-label="Open navigation"><i></i><i></i><i></i></button>
+</header>
+
+<main>
+  <!-- HERO -->
+  <section class="hero" id="top">
+    <div class="hero-copy">
+      <span class="spark s1">✦</span>
+      <img class="hero-logo" src="img/logo.webp" alt="Pick Your Toxic">
+      <p class="hero-sub">Choose your poison.</p>
+      <button class="btn" data-open-menu>View menu</button>
+      <a class="scroll" href="#toxic">↓ Scroll down</a>
+    </div>
+    <div class="hero-art">
+      <span class="spark s2">✦</span>
+      <span class="spark s3">✦</span>
+      <img src="img/char_violetta.webp" alt="Violetta Vice">
+      <img class="stamp" src="img/stamp.webp" alt="No regrets, only memories">
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee" aria-hidden="true"><div>
+    <span>More than just a bar</span>✦<span>No love. Just drinks</span>✦<span>Open till 04.00</span>✦<span>Serves cold</span>✦<span>Choose wisely</span>✦
+    <span>More than just a bar</span>✦<span>No love. Just drinks</span>✦<span>Open till 04.00</span>✦<span>Serves cold</span>✦<span>Choose wisely</span>✦
+  </div></div>
+
+  <!-- CHOOSE YOUR TOXIC -->
+  <section class="toxic" id="toxic">
+    <h2 class="big">Choose<br>your toxic</h2>
+    <div class="chars" id="chars" role="tablist"></div>
+    <div class="dots" id="dots"></div>
+    <div class="cat" id="cat"></div>
+  </section>
+
+  <!-- QUIZ -->
+  <section class="quiz" id="quiz">
+    <span class="spark q1">✦</span><span class="spark q2">✦</span>
+    <h2 class="big">What's your<br>toxic tonight?</h2>
+    <p class="quiz-sub">Three questions. Zero judgement. One drink you probably shouldn't order.</p>
+    <div class="quiz-box" id="quizBox"></div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="about" id="about">
+    <div>
+      <h2 class="big">About<br>the bar</h2>
+      <p>Pick Your Toxic is a cocktail bar where drinks come with personalities. Each cocktail represents a different temptation, mood and character.</p>
+      <p class="serif">We don't offer drinks, we offer experiences. Choose wisely.</p>
+    </div>
+    <div class="levels">
+      <h3>Toxicity level</h3>
+      <ul>
+        <li><span class="h">♡</span> Harmless</li>
+        <li><span class="h">♡♡</span> Manipulative</li>
+        <li><span class="h">♡♡♡</span> Emotionally dangerous</li>
+        <li><span class="h">♡♡♡♡</span> Call your therapist</li>
+      </ul>
+      <p class="fine">All drinks are made with love (and bad intentions).</p>
+    </div>
+  </section>
+
+  <!-- EVENTS -->
+  <section class="events" id="events">
+    <h2 class="big">Events</h2>
+    <div class="ev-list" id="evList"></div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact" id="contact">
+    <div>
+      <h2 class="big">Find us</h2>
+      <p class="addr">Bornova, İzmir<br>Speakeasy bar — look for the pink light.</p>
+    </div>
+    <dl>
+      <dt>Open</dt><dd>Wed – Sat · 19.00 – 04.00</dd>
+      <dt>Reservations</dt><dd>+90 541 497 66 66 · DM us</dd>
+      <dt>Instagram</dt><dd>@pickurtoxic.bar</dd>
+      <dt>Payment</dt><dd>Credit cards only</dd>
+    </dl>
+    <p class="c-tag">Tag us in your bad decisions ✦</p>
+  </section>
+</main>
+
+<footer class="foot">
+  <img src="img/logo.webp" alt="">
+  <p><b>Concept project by Burçe Bayar.</b> Pick Your Toxic is a fictional brand — not a real bar. 18+ · Please drink responsibly.</p>
+</footer>
+
+<!-- FOLDING MENU -->
+<div class="menu-ov" id="menuOv" hidden>
+  <button class="menu-close" id="menuClose">Close menu ✕</button>
+  <p class="menu-hint" id="menuHint">Click the menu to open it</p>
+  <div class="stage" id="stage">
+    <div class="fold" id="fold"></div>
+  </div>
+  <div class="book-nav" id="bookNav">
+    <button id="bkPrev" aria-label="Previous page">‹</button>
+    <span id="bkPage">1 / 5</span>
+    <button id="bkNext" aria-label="Next page">›</button>
+  </div>
+  <div class="book-txt" id="bookTxt"></div>
+  <!-- detail -->
+  <div class="detail" id="detail" hidden>
+    <button class="d-back" id="dBack">← Back to menu</button>
+    <div class="d-wrap">
+      <img id="dImg" alt="">
+      <div class="d-info" id="dInfo"></div>
+    </div>
+    <button class="d-arrow d-prev" id="dPrev" aria-label="Previous">‹</button>
+    <button class="d-arrow d-next" id="dNext" aria-label="Next">›</button>
+  </div>
+</div>
+
+<script src="pyt.js"></script>
+</body>
+</html>
