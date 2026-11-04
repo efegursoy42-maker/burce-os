@@ -1,4 +1,5 @@
-/* BurçeOS v2 — pencere yöneticisi + kişiselleştirme. İçerik için data.js'i düzenle. */
+/* BurçeOS v3.1 — pencere yöneticisi + kişiselleştirme + Pick Your Toxic + çoklu ikon seçimi.
+   İçerik için data.js'i düzenle. */
 (() => {
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
@@ -15,9 +16,7 @@ const L = v => (v && typeof v === "object") ? (v[lang] ?? v.en) : v;
 const T = {
   boot: { en: "loading creativity…", tr: "yaratıcılık yükleniyor…" },
   skip: { en: "click to skip", tr: "geçmek için tıkla" },
-  stickyT: { en: "Open for freelance ✿", tr: "Freelance işlere açığım ✿" },
-  stickyB: { en: "Branding · social media · content. Say hi →", tr: "Marka · sosyal medya · içerik. Yaz bana →" },
-  sign: { en: "Graphic Designer · Izmir", tr: "Grafik Tasarımcı · İzmir" },
+  sign: { en: "Graphic Designer", tr: "Grafik Tasarımcı" },
   role: { en: "Graphic Designer", tr: "Grafik Tasarımcı" },
   trash: { en: "Recycle Bin", tr: "Geri Dönüşüm Kutusu" },
   trashEmpty: { en: "The bin is empty.<br>Bad ideas don't stay here ✿", tr: "Çöp kutusu boş.<br>Kötü fikirler burada kalmaz ✿" },
@@ -34,9 +33,28 @@ const T = {
             tr: "Bir duvar kağıdı seç. Klasik olanlar pencere ve görev çubuğu stilini de değiştirir." },
   wallpaper: { en: "Wallpaper", tr: "Duvar kağıdı" },
   sort: { en: "Sort icons", tr: "İkonları sırala" },
+  selAll: { en: "Select all icons", tr: "Tüm ikonları seç" },
   refresh: { en: "Refresh", tr: "Yenile" },
   soundOn: { en: "Sounds: on", tr: "Sesler: açık" }, soundOff: { en: "Sounds: off", tr: "Sesler: kapalı" },
-  toLang: { en: "Türkçe'ye geç", tr: "Switch to English" }
+  toLang: { en: "Türkçe'ye geç", tr: "Switch to English" },
+  /* Pick Your Toxic */
+  visit: { en: "Visit website", tr: "Web sitesini aç" },
+  openMenu: { en: "Open the menu", tr: "Menüyü aç" },
+  pAbout: { en: "About the brand", tr: "Marka hakkında" },
+  pChars: { en: "Characters", tr: "Karakterler" },
+  pCharsHint: { en: "Every section of the menu has its own character.", tr: "Menünün her bölümünün kendi karakteri var." },
+  pMenu: { en: "Menu system", tr: "Menü sistemi" },
+  pMenuTxt: { en: "The menu is built like a personality catalog: each section represents a different side of temptation — character, flavour profile, toxicity level and mood. Open it and see how it folds.",
+              tr: "Menü bir kişilik kataloğu gibi kurgulandı: her bölüm cazibenin farklı bir yüzünü temsil ediyor — karakter, tat profili, toksisite seviyesi ve ruh hali. Aç ve nasıl katlandığını gör." },
+  pType: { en: "Typography & colour", tr: "Tipografi & renk" },
+  pCopy: { en: "click to copy", tr: "kopyalamak için tıkla" },
+  pCopied: { en: "Copied!", tr: "Kopyalandı!" },
+  pApps: { en: "Applications", tr: "Uygulamalar" },
+  pFeed: { en: "Feed & website", tr: "Sosyal medya & web sitesi" },
+  pWebTxt: { en: "The website is live inside BurçeOS — browse the menu, meet the characters and find your toxic.",
+             tr: "Web sitesi BurçeOS'un içinde çalışıyor — menüyü gez, karakterlerle tanış, kendi toxic'ini bul." },
+  browser: { en: "Browser", tr: "Tarayıcı" },
+  newTab: { en: "Open in new tab", tr: "Yeni sekmede aç" }
 };
 const t = (k, ...a) => { const v = L(T[k]); return typeof v === "function" ? v(...a) : v; };
 
@@ -68,7 +86,7 @@ const folderSVG = c => theme() === "burce"
 const ICONS = {
   about: () => `<svg viewBox="0 0 54 46"><rect x="10" y="1" width="34" height="44" rx="3" fill="#f6efff"/><path d="M16 12h22M16 19h22M16 26h22M16 33h14" stroke="${theme() === "burce" ? "#922de6" : "#2b6fd6"}" stroke-width="2.5" stroke-linecap="round"/><circle cx="40" cy="38" r="8" fill="${theme() === "burce" ? "#e815b2" : "#2b6fd6"}"/><text x="40" y="42" font-size="11" text-anchor="middle" fill="#fff" font-family="Arial" font-weight="700">i</text></svg>`,
   cv: () => `<svg viewBox="0 0 54 46"><path d="M12 1h22l10 10v34H12z" fill="#fff"/><path d="M34 1v10h10" fill="#d9d4e6"/><rect x="6" y="22" width="30" height="14" rx="2" fill="#e5252a"/><text x="21" y="33" font-size="10" text-anchor="middle" fill="#fff" font-family="Arial" font-weight="700">PDF</text></svg>`,
-  toxic: () => `<div class="glyph" style="background:#0b0b0b;color:#ff2e63;font-family:'Bagel Fat One';font-size:13px;line-height:.9;border:2px solid #ff2e63">PICK<br>TOXIC</div>`,
+  toxic: () => `<div class="glyph" style="background:#10100F;border:2px solid #E34678;padding:3px"><img src="pyt/img/logo.webp" alt="" style="height:100%;width:auto"></div>`,
   reshoot: () => `<div class="glyph" style="background:linear-gradient(135deg,#922de6,#e815b2 55%,#ffa42b);color:#fff;font-family:'Bagel Fat One';font-size:28px">R</div>`,
   behance: () => `<div class="glyph" style="background:#1769ff;color:#fff">Bē</div>`,
   linkedin: () => `<div class="glyph" style="background:#0a66c2;color:#fff">in</div>`,
@@ -104,12 +122,12 @@ function renderIcons() {
     iconsEl.appendChild(el);
     enableIconDrag(el);
   });
-  layoutIcons();
+  layoutIcons(); paintSel();
 }
 
-/* ---------- İkon yerleşimi + sürükle-bırak (sadece masaüstü) ---------- */
+/* ---------- İkon yerleşimi ---------- */
 const CELL_W = 100, CELL_H = 108, PAD = 16;
-let cells = {};                         // id -> [col,row]
+let cells = {};
 const grid = () => {
   const r = Math.max(1, Math.floor((iconsEl.clientHeight - PAD * 2) / CELL_H));
   const c = Math.max(1, Math.floor((iconsEl.clientWidth - PAD * 2) / CELL_W));
@@ -129,38 +147,100 @@ function layoutIcons() {
   icons.forEach(i => { const [c, r] = cells[i.dataset.id];
     i.style.left = PAD + c * CELL_W + "px"; i.style.top = PAD + r * CELL_H + "px"; });
 }
+addEventListener("resize", () => layoutIcons());
+
+/* ---------- Seçim (tek / Ctrl+tık / alan seçimi) ---------- */
+const sel = new Set();
+function paintSel() { $$(".icon", iconsEl).forEach(i => i.classList.toggle("sel", sel.has(i.dataset.id))); }
+function setSel(ids) { sel.clear(); ids.forEach(i => sel.add(i)); paintSel(); }
+const iconById = id => iconsEl.querySelector(`.icon[data-id="${id}"]`);
+
+/* masaüstünün boş yerinden sürükleyerek alan seçimi */
+iconsEl.addEventListener("pointerdown", e => {
+  if (e.target !== iconsEl || isMobile() || e.button !== 0) return;
+  const add = e.ctrlKey || e.metaKey || e.shiftKey, base = add ? new Set(sel) : new Set();
+  const box = iconsEl.getBoundingClientRect(), sx = e.clientX - box.left, sy = e.clientY - box.top;
+  let marq = null;
+  iconsEl.setPointerCapture(e.pointerId);
+  iconsEl.onpointermove = m => {
+    const x = m.clientX - box.left, y = m.clientY - box.top;
+    if (!marq) { if (Math.hypot(x - sx, y - sy) < 4) return; marq = document.createElement("div"); marq.id = "marq"; iconsEl.appendChild(marq); }
+    const l = Math.min(sx, x), tp = Math.min(sy, y), w = Math.abs(x - sx), h = Math.abs(y - sy);
+    Object.assign(marq.style, { left: l + "px", top: tp + "px", width: w + "px", height: h + "px" });
+    const hit = new Set(base);
+    $$(".icon", iconsEl).forEach(i => {
+      const il = i.offsetLeft, it = i.offsetTop, ir = il + i.offsetWidth, ib = it + i.offsetHeight;
+      if (il < l + w && ir > l && it < tp + h && ib > tp) hit.add(i.dataset.id);
+    });
+    setSel([...hit]);
+  };
+  iconsEl.onpointerup = () => {
+    iconsEl.onpointermove = iconsEl.onpointerup = null;
+    if (marq) marq.remove(); else if (!add) setSel([]);
+  };
+});
+
+/* ikon sürükleme: seçili ikonların hepsi birlikte taşınır */
 function enableIconDrag(el) {
-  let sx, sy, ox, oy, moved = false, block = false;
+  let block = false;
   el.addEventListener("pointerdown", e => {
     if (isMobile() || e.button !== 0) return;
-    sx = e.clientX; sy = e.clientY; ox = el.offsetLeft; oy = el.offsetTop; moved = false;
+    const id = el.dataset.id, toggle = e.ctrlKey || e.metaKey || e.shiftKey;
+    if (toggle) {
+      e.preventDefault(); block = true;
+      sel.has(id) ? sel.delete(id) : sel.add(id); paintSel(); return;
+    }
+    if (!sel.has(id)) setSel([id]);
+    const group = [...sel].map(iconById).filter(Boolean);
+    const orig = group.map(g => [g, g.offsetLeft, g.offsetTop]);
+    const sx = e.clientX, sy = e.clientY; let moved = false;
     el.setPointerCapture(e.pointerId);
     el.onpointermove = m => {
       const dx = m.clientX - sx, dy = m.clientY - sy;
       if (!moved && Math.hypot(dx, dy) < 6) return;
-      moved = true; el.classList.add("dragging");
-      el.style.left = ox + dx + "px"; el.style.top = oy + dy + "px";
+      moved = true;
+      orig.forEach(([g, x, y]) => { g.classList.add("dragging"); g.style.left = x + dx + "px"; g.style.top = y + dy + "px"; });
     };
     el.onpointerup = () => {
       el.onpointermove = el.onpointerup = null;
       if (!moved) return;
-      block = true; el.classList.remove("dragging");
-      const { rows, cols } = grid();
-      const c = Math.max(0, Math.min(cols - 1, Math.round((el.offsetLeft - PAD) / CELL_W)));
-      const r = Math.max(0, Math.min(rows - 1, Math.round((el.offsetTop - PAD) / CELL_H)));
-      const other = Object.keys(cells).find(k => k !== el.dataset.id && cells[k][0] === c && cells[k][1] === r);
-      if (other) cells[other] = cells[el.dataset.id];         // yer değiştir
-      cells[el.dataset.id] = [c, r];
-      store.set("bos-icons", cells); layoutIcons();
+      block = true;
+      orig.forEach(([g]) => g.classList.remove("dragging"));
+      dropGroup(group, el);
     };
   });
   el.addEventListener("click", e => { if (block) { e.preventDefault(); e.stopImmediatePropagation(); block = false; } }, true);
 }
-addEventListener("resize", () => layoutIcons());
+function dropGroup(group, lead) {
+  const { rows, cols } = grid();
+  const ids = group.map(g => g.dataset.id), moving = new Set(ids);
+  const target = g => [Math.max(0, Math.min(cols - 1, Math.round((g.offsetLeft - PAD) / CELL_W))),
+                       Math.max(0, Math.min(rows - 1, Math.round((g.offsetTop - PAD) / CELL_H)))];
+  if (group.length === 1) {                       // tek ikon: dolu yere bırakınca yer değiştir
+    const [c, r] = target(lead), id = lead.dataset.id;
+    const other = Object.keys(cells).find(k => k !== id && cells[k][0] === c && cells[k][1] === r);
+    if (other) cells[other] = cells[id];
+    cells[id] = [c, r];
+  } else {                                         // grup: her ikon en yakın boş hücreye
+    const taken = new Set(Object.keys(cells).filter(k => !moving.has(k)).map(k => cells[k].join(",")));
+    [lead, ...group.filter(g => g !== lead)].forEach(g => {
+      let [c, r] = target(g), best = null;
+      if (!taken.has(c + "," + r)) best = [c, r];
+      else for (let d = 1; d < cols + rows && !best; d++)
+        for (let dc = -d; dc <= d && !best; dc++) for (let dr = -d; dr <= d && !best; dr++) {
+          if (Math.max(Math.abs(dc), Math.abs(dr)) !== d) continue;
+          const nc = c + dc, nr = r + dr;
+          if (nc >= 0 && nr >= 0 && nc < cols && nr < rows && !taken.has(nc + "," + nr)) best = [nc, nr];
+        }
+      best = best || cells[g.dataset.id];
+      taken.add(best.join(",")); cells[g.dataset.id] = best;
+    });
+  }
+  store.set("bos-icons", cells); layoutIcons();
+}
 
 /* ================= PENCERE YÖNETİCİSİ ================= */
 const wins = new Map(); let z = 10, cascade = 0;
-/* build() → { title, color, html, status, bind(el) } — dil değişince tekrar çağrılır */
 function createWin(id, build, { w = 860, h = 560 } = {}) {
   if (wins.has(id)) { const o = wins.get(id); o.el.classList.remove("min"); focus(id); return o.el; }
   const el = document.createElement("section");
@@ -188,11 +268,12 @@ function createWin(id, build, { w = 860, h = 560 } = {}) {
 }
 function paint(id) {
   const { el, task, build } = wins.get(id), b = build(), m = t("menu");
+  if (b.cls) el.classList.add(b.cls);
   el.innerHTML = `
     <header class="titlebar"><i class="dot" style="--c:${b.color}"></i><span class="t">${b.title}</span>
       <div class="tb-btns"><button class="mn" title="${t("min")}"><span>_</span></button><button class="mx" title="${t("max")}"><span>□</span></button><button class="x" title="${t("close")}"><span>✕</span></button></div>
     </header>
-    <div class="toolbar"><span>${m[0]}</span><span>${m[1]}</span><span>${m[2]}</span><span class="path">C:\\Burce\\Portfolio\\${b.title}</span></div>
+    ${b.toolbar === false ? "" : `<div class="toolbar"><span>${m[0]}</span><span>${m[1]}</span><span>${m[2]}</span><span class="path">C:\\Burce\\Portfolio\\${b.title}</span></div>`}
     <div class="wbody">${b.html}</div>
     ${b.status ? `<div class="statusbar">${b.status}</div>` : ""}`;
   task.textContent = b.title;
@@ -218,16 +299,18 @@ function dragWin(win, handle) {
     if (e.target.closest("button") || isMobile() || win.classList.contains("max")) return;
     const sx = e.clientX, sy = e.clientY, ox = win.offsetLeft, oy = win.offsetTop;
     handle.setPointerCapture(e.pointerId);
+    win.classList.add("moving");
     handle.onpointermove = m => {
       win.style.left = Math.min(innerWidth - 80, Math.max(-win.offsetWidth + 80, ox + m.clientX - sx)) + "px";
       win.style.top = Math.min(innerHeight - 90, Math.max(0, oy + m.clientY - sy)) + "px";
     };
-    handle.onpointerup = () => { handle.onpointermove = null; };
+    handle.onpointerup = () => { handle.onpointermove = null; win.classList.remove("moving"); };
   });
 }
 
 /* ================= İÇERİK PENCERELERİ ================= */
 function openProject(p) {
+  if (p.custom === "toxic") return openToxic(p);
   if (p.type === "case") {
     createWin(p.id, () => ({
       title: p.name, color: p.color, status: t("scenes", p.img.length),
@@ -243,12 +326,109 @@ function openProject(p) {
     }), { w: 820, h: 520 });
   }
 }
+
+/* ---------- PICK YOUR TOXIC ---------- */
+function openToxic(p) {
+  const shot = (n, cls = "") => `<img class="pyt-shot ${cls}" src="${IMG(n)}" loading="lazy" data-n="${n}" alt="Pick Your Toxic — ${n.replace("pyt_", "")}">`;
+  const charSet = { name: "Pick Your Toxic — " + t("pChars"), img: PYT.characters.map(c => c.full) };
+  createWin(p.id, () => ({
+    title: p.name, color: p.color, cls: "pyt-win", status: t("scenes", p.img.length),
+    html: `<div class="pyt">
+      <section class="pyt-hero">
+        <span class="pyt-spark a">✦</span><span class="pyt-spark b">✦</span>
+        <p class="pyt-kicker">More than just a bar</p>
+        <img class="pyt-logo" src="pyt/img/logo.webp" alt="Pick Your Toxic">
+        <div class="pyt-sub">${L(PYT.subtitle)}</div>
+        <p class="pyt-intro">${L(PYT.intro)}</p>
+        <div class="pyt-cta">
+          <button class="pyt-btn" data-web>${t("visit")} ↗</button>
+          <button class="pyt-btn ghost" data-menu>${t("openMenu")}</button>
+        </div>
+      </section>
+
+      <section class="pyt-sec"><h3><i>✦</i>${t("pAbout")}</h3>${shot("pyt_about")}</section>
+
+      <section class="pyt-sec"><h3><i>✦</i>${t("pChars")}</h3><p class="pyt-p">${t("pCharsHint")}</p>
+        <div class="pyt-chars">${PYT.characters.map((c, i) => `
+          <button class="pyt-char" style="--c:${c.color}" data-ci="${i}">
+            <img src="pyt/img/char_${c.img}.webp" alt="${c.name}" loading="lazy">
+            <b>${c.name}</b><small>${c.cat}</small><em>${L(c.line)}</em>
+          </button>`).join("")}</div>
+        ${shot("pyt_chars1")}${shot("pyt_chars2")}
+      </section>
+
+      <section class="pyt-sec"><h3><i>✦</i>${t("pMenu")}</h3>
+        <div class="pyt-menu-cta"><p class="pyt-p">${t("pMenuTxt")}</p><button class="pyt-btn" data-menu>${t("openMenu")} ↗</button></div>
+        ${shot("pyt_menusystem")}${shot("pyt_menuspread")}
+      </section>
+
+      <section class="pyt-sec"><h3><i>✦</i>${t("pType")}</h3>
+        <div class="pyt-type">
+          <div class="pyt-fonts">${PYT.fonts.map(f => `<div><small>${f[0]}</small><b>${f[1]}</b></div>`).join("")}</div>
+          <div class="pyt-sw">${PYT.colors.map(c => `<button class="sw" data-hex="${c[1]}" title="${t("pCopy")}"><i style="background:${c[1]}"></i><b>${c[0]}</b><span>${c[1]}</span></button>`).join("")}</div>
+        </div>
+      </section>
+
+      <section class="pyt-sec"><h3><i>✦</i>${t("pApps")}</h3>${shot("pyt_apps")}</section>
+
+      <section class="pyt-sec"><h3><i>✦</i>${t("pFeed")}</h3>${shot("pyt_feed")}
+        <div class="pyt-menu-cta"><p class="pyt-p">${t("pWebTxt")}</p><button class="pyt-btn" data-web>${t("visit")} ↗</button></div>
+      </section>
+    </div>`,
+    bind: el => {
+      $$("[data-web]", el).forEach(b => b.onclick = () => openBrowser());
+      $$("[data-menu]", el).forEach(b => b.onclick = () => openBrowser("menu"));
+      $$(".pyt-shot", el).forEach(img => img.onclick = () => lightbox(p, p.img.indexOf(img.dataset.n)));
+      $$(".pyt-char", el).forEach(b => b.onclick = () => lightbox(charSet, +b.dataset.ci));
+      $$(".sw", el).forEach(b => b.onclick = () => {
+        const done = () => { const s = $("span", b), o = s.textContent; s.textContent = t("pCopied"); b.classList.add("ok"); setTimeout(() => { s.textContent = o; b.classList.remove("ok"); }, 1100); };
+        (navigator.clipboard ? navigator.clipboard.writeText(b.dataset.hex) : Promise.reject()).then(done, done);
+      });
+    }
+  }), { w: 1040, h: 700 });
+}
+
+/* Retro tarayıcı: Pick Your Toxic sitesini BurçeOS içinde açar */
+function openBrowser(hash) {
+  const src = PYT.site + (hash ? "#" + hash : "");
+  if (wins.has("pyt-web")) {
+    const o = wins.get("pyt-web"); o.el.classList.remove("min"); focus("pyt-web");
+    const f = $("iframe", o.el); if (hash) { f.src = "about:blank"; setTimeout(() => f.src = src, 30); }
+    return;
+  }
+  let first = src;
+  createWin("pyt-web", () => ({
+    title: `Pick Your Toxic — ${t("browser")}`, color: "#E34678", toolbar: false, cls: "browser-win",
+    html: `<div class="browser">
+      <div class="b-bar">
+        <button data-b="back" title="Back">←</button><button data-b="fwd" title="Forward">→</button><button data-b="reload" title="Reload">⟳</button>
+        <div class="b-url"><span class="lock">🔒</span>https://<b>${PYT.url}</b></div>
+        <a class="b-ext" href="${PYT.site}" target="_blank" rel="noopener" title="${t("newTab")}">↗</a>
+      </div>
+      <div class="b-load"><i></i></div>
+      <iframe src="${first}" title="Pick Your Toxic website"></iframe>
+    </div>`,
+    bind: el => {
+      const f = $("iframe", el), bar = $(".b-load", el);
+      bar.classList.add("on"); f.addEventListener("load", () => bar.classList.remove("on"));
+      $$("[data-b]", el).forEach(b => b.onclick = () => {
+        try {
+          if (b.dataset.b === "back") f.contentWindow.history.back();
+          if (b.dataset.b === "fwd") f.contentWindow.history.forward();
+          if (b.dataset.b === "reload") { bar.classList.add("on"); f.contentWindow.location.reload(); }
+        } catch {}
+      });
+      first = PYT.site;
+    }
+  }), { w: 1180, h: 760 });
+}
+
 function openAbout() {
   const P = PROFILE;
   createWin("about", () => ({
     title: "About_Me.txt", color: "#b7f36b",
     html: `<div class="about">
-      <img class="ava" src="assets/img/avatar.webp" alt="${P.name}">
+      <div class="ava" role="img" aria-label="${P.name}" style="background-image:url(assets/img/avatar.webp)"></div>
       <div>
         <h2>${P.name}</h2><div class="role">${L(P.title)} · ${L(P.city)}</div>
         <p>${L(P.bio)}</p>
@@ -297,6 +477,7 @@ function showCtx(x, y) {
     <div class="ctx-lbl">${t("wallpaper")}</div>
     ${WALLPAPERS.map(w => `<button data-a="wp" data-v="${w.id}" class="sub">${w.id === curWp() ? "●" : "○"} ${w.name}</button>`).join("")}
     <hr>
+    <button data-a="selall">▣ ${t("selAll")}</button>
     <button data-a="sort">▦ ${t("sort")}</button>
     <button data-a="refresh">⟳ ${t("refresh")}</button>
     <hr>
@@ -314,6 +495,7 @@ $("#desktop").addEventListener("contextmenu", e => {
 ctx.addEventListener("click", e => {
   const b = e.target.closest("button"); if (!b) return;
   ({ personalize: openPersonalize, wp: () => setWallpaper(b.dataset.v),
+     selall: () => setSel($$(".icon", iconsEl).map(i => i.dataset.id)),
      sort: () => { store.del("bos-icons"); layoutIcons(); }, refresh: doRefresh,
      sound: toggleSound, lang: toggleLang })[b.dataset.a]();
   ctx.hidden = true;
@@ -342,12 +524,13 @@ function openById(id) {
   if (id === "about") return openAbout();
   if (id === "trash") return openTrash();
   if (id === "personalize") return openPersonalize();
+  if (id === "pyt-web") return openBrowser();
   const p = PROJECTS.find(x => x.id === id); if (p) openProject(p);
 }
 
 /* ================= LIGHTBOX ================= */
 const lb = $("#lightbox"); let cur = null, idx = 0;
-function lightbox(p, i) { cur = p; idx = i; lb.hidden = false; show(); }
+function lightbox(p, i) { cur = p; idx = Math.max(0, i); lb.hidden = false; show(); }
 function show() {
   $("img", lb).src = IMG(cur.img[idx]);
   $("figcaption", lb).textContent = `${cur.name} — ${idx + 1} / ${cur.img.length}`;
@@ -364,7 +547,10 @@ lb.addEventListener("touchend", e => { const d = e.changedTouches[0].clientX - t
 addEventListener("keydown", e => {
   if (!ctx.hidden && e.key === "Escape") { ctx.hidden = true; return; }
   if (!lb.hidden) { if (e.key === "Escape") lb.hidden = true; if (e.key === "ArrowRight") step(1); if (e.key === "ArrowLeft") step(-1); return; }
-  if (e.key === "Escape") { const a = [...wins.keys()].find(k => wins.get(k).el.classList.contains("active")); if (a) close(a); }
+  if (e.key === "Escape") {
+    if (sel.size) { setSel([]); return; }
+    const a = [...wins.keys()].find(k => wins.get(k).el.classList.contains("active")); if (a) close(a);
+  }
 });
 
 /* ================= DİL + SES BUTONLARI ================= */
@@ -376,7 +562,13 @@ function applyLang() {
 }
 function toggleLang() {
   lang = lang === "tr" ? "en" : "tr"; store.set("bos-lang", lang);
-  applyLang(); renderIcons(); renderStart(); wins.forEach((_, id) => paint(id));
+  applyLang(); renderIcons(); renderStart();
+  wins.forEach((_, id) => { if (id !== "pyt-web") paint(id); });
+  paintSnd();
+}
+function paintSnd() {
+  $("#sndBtn").innerHTML = `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor"/>${soundOn ? '<path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/>' : '<path d="M17 9l5 6M22 9l-5 6"/>'}</svg>`;
+  $("#sndBtn").title = soundOn ? t("soundOn") : t("soundOff");
 }
 function toggleSound() {
   soundOn = !soundOn; store.set("bos-sound", soundOn);
@@ -385,10 +577,6 @@ function toggleSound() {
 }
 $("#langBtn").onclick = toggleLang;
 $("#sndBtn").onclick = toggleSound;
-function paintSnd() {
-  $("#sndBtn").innerHTML = `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor"/>${soundOn ? '<path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/>' : '<path d="M17 9l5 6M22 9l-5 6"/>'}</svg>`;
-  $("#sndBtn").title = soundOn ? t("soundOn") : t("soundOff");
-}
 paintSnd();
 $("#trayLi").href = PROFILE.linkedin;
 
@@ -399,7 +587,10 @@ const PAL = ["#e815b2", "#b7f36b", "#ffa42b", "#922de6", "#ff9ad5", "#f6efff"];
 function resetIdle() {
   if (!saver.hidden) stopSaver();
   clearTimeout(idleT);
-  idleT = setTimeout(() => { if (!isMobile() && lb.hidden && !$("#boot")) startSaver(); }, IDLE_MS);
+  idleT = setTimeout(() => {
+    const browsing = wins.has("pyt-web") && !wins.get("pyt-web").el.classList.contains("min");
+    if (!isMobile() && lb.hidden && !$("#boot") && !browsing) startSaver();
+  }, IDLE_MS);
 }
 ["pointermove", "pointerdown", "keydown", "wheel", "touchstart"].forEach(ev => addEventListener(ev, resetIdle, { passive: true }));
 function startSaver() {

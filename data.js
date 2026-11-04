@@ -6,6 +6,7 @@
                 assets/img/thumb/ (küçük önizleme, ~640px)
    - Duvar kağıtları: assets/img/wp/  (ad.webp + ad_s.webp)
    - CV: assets/cv/Burce-Bayar-CV.pdf (aynı adla üstüne yaz)
+   - Pick Your Toxic mini sitesi: pyt/ klasörü (içeriği pyt/pyt.js'te)
    ========================================================= */
 
 const PROFILE = {
@@ -46,17 +47,14 @@ const PROFILE = {
 };
 
 /* type: "folder" → galeri penceresi | type: "case" → vaka çalışması
-   color: klasör rengi (Windows temalarında klasördeki etiket rengi) */
+   custom: "toxic" → özel PickYourToxic penceresi (aşağıdaki PYT) */
 const PROJECTS = [
   { id: "posts",     no: "01", name: "Instagram Posts", type: "folder", color: "#ff4fb8", img: ["s05", "s06"] },
   { id: "reels",     no: "02", name: "Reels Cover",     type: "folder", color: "#b7f36b", img: ["s07"] },
   { id: "thumbnail", no: "03", name: "Thumbnail",       type: "folder", color: "#ffa42b", img: ["s08"] },
   { id: "photos",    no: "04", name: "Photos",          type: "folder", color: "#9b5cff", img: ["s09", "s10"] },
-  { id: "toxic",     no: "05", name: "PickYourToxic.exe", type: "case", color: "#ff2e63", icon: "toxic",
-    subtitle: { en: "Branding · Fictional cocktail bar", tr: "Marka Kimliği · Kurgusal kokteyl barı" },
-    intro: { en: "Pick Your Toxic is a fictional cocktail bar where drinks come with personalities. Each cocktail represents a different temptation, mood and character. Characters, menu system, feed and applications.",
-             tr: "Pick Your Toxic, içeceklerin kişilik taşıdığı kurgusal bir kokteyl barı. Her kokteyl farklı bir cazibeyi, ruh halini ve karakteri temsil ediyor. Karakterler, menü sistemi, feed ve uygulamalar." },
-    img: ["s11", "s12", "s13", "s14", "s15"] },
+  { id: "toxic",     no: "05", name: "PickYourToxic.exe", type: "case", custom: "toxic", color: "#E34678", icon: "toxic",
+    img: ["pyt_about", "pyt_chars1", "pyt_chars2", "pyt_menusystem", "pyt_menuspread", "pyt_apps", "pyt_feed"] },
   { id: "reshoot",   no: "05", name: "ReShoot.app", type: "case", color: "#7b2ff7", icon: "reshoot",
     subtitle: { en: "Marketing Graphic Design · for HUBX", tr: "Pazarlama Grafik Tasarımı · HUBX için" },
     intro: { en: "Designing a conversion-focused App Store presence for ReShoot: visual direction, app icon, screenshot strategy and A/B testing variables.",
@@ -66,8 +64,36 @@ const PROJECTS = [
   { id: "pr",        no: "07", name: "PR",      type: "folder", color: "#ff9ad5", img: ["s22"] }
 ];
 
-/* Duvar kağıtları — theme: "burce" | "xp" | "win10"
-   Seçilen duvar kağıdı pencere/görev çubuğu/klasör stilini de değiştirir. */
+/* ---------- PICK YOUR TOXIC vaka çalışması ---------- */
+const PYT = {
+  site: "pyt/index.html",
+  url: "pickurtoxic.bar",
+  subtitle: { en: "Branding · Fictional cocktail bar · 2026", tr: "Marka Kimliği · Kurgusal kokteyl barı · 2026" },
+  intro: {
+    en: "Pick Your Toxic is a fictional cocktail bar where drinks come with personalities. Each cocktail represents a different temptation, mood and character — so the menu is built like a personality catalog. Logo, characters, menu system, applications, social feed and website.",
+    tr: "Pick Your Toxic, içeceklerin kişilik taşıdığı kurgusal bir kokteyl barı. Her kokteyl farklı bir cazibeyi, ruh halini ve karakteri temsil ediyor; bu yüzden menü bir kişilik kataloğu gibi kurgulandı. Logo, karakterler, menü sistemi, uygulamalar, sosyal medya akışı ve web sitesi."
+  },
+  /* full: karaktere tıklayınca açılan TEK karakter görseli (assets/img/full/) */
+  characters: [
+    { img: "eros", full: "pyt_ch_eros", name: "Childish Eros", cat: "Sweet Talkers", color: "#E07D91",
+      line: { en: "Sweet, emotional and dangerously charming.", tr: "Tatlı, duygusal ve tehlikeli derecede çekici." } },
+    { img: "vixen", full: "pyt_ch_vixen", name: "Gabriela Vixen", cat: "Red Flags", color: "#E0480E",
+      line: { en: "Bold, spicy and impossible to ignore.", tr: "Cesur, acı ve görmezden gelinemez." } },
+    { img: "violetta", full: "pyt_ch_violetta", name: "Violetta Vice", cat: "After Midnight", color: "#B14C89",
+      line: { en: "Elegant, mysterious and slightly addictive.", tr: "Zarif, gizemli ve biraz bağımlılık yapıcı." } },
+    { img: "envy", full: "pyt_ch_envy", name: "Green Envy", cat: "Green Envy", color: "#AB9519",
+      line: { en: "Funny, greedy and always wanting more.", tr: "Komik, açgözlü ve hep daha fazlasını isteyen." } }
+  ],
+  colors: [
+    ["Toxic Pink", "#E34678"], ["Devil Orange", "#E0480E"], ["Envy Green", "#AB9519"],
+    ["Midnight Black", "#10100F"], ["Lavender Haze", "#B14C89"]
+  ],
+  fonts: [
+    ["Headline", "Heading Now"], ["Body", "Nimbus Sans Bold Condensed"]
+  ]
+};
+
+/* Duvar kağıtları — theme: "burce" | "xp" | "win10" */
 const WALLPAPERS = [
   { id: "burce", name: "BurçeOS",           theme: "burce" },
   { id: "bliss", name: "Bliss (XP)",        theme: "xp" },
