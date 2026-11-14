@@ -1,4 +1,4 @@
-/* BurçeOS v3.1 — pencere yöneticisi + kişiselleştirme + Pick Your Toxic + çoklu ikon seçimi.
+/* BurçeOS v4 — pencere yöneticisi + kişiselleştirme + Pick Your Toxic + YouTube + çoklu ikon seçimi.
    İçerik için data.js'i düzenle. */
 (() => {
 const $ = (s, el = document) => el.querySelector(s);
@@ -54,7 +54,19 @@ const T = {
   pWebTxt: { en: "The website is live inside BurçeOS — browse the menu, meet the characters and find your toxic.",
              tr: "Web sitesi BurçeOS'un içinde çalışıyor — menüyü gez, karakterlerle tanış, kendi toxic'ini bul." },
   browser: { en: "Browser", tr: "Tarayıcı" },
-  newTab: { en: "Open in new tab", tr: "Yeni sekmede aç" }
+  newTab: { en: "Open in new tab", tr: "Yeni sekmede aç" },
+  /* YouTube */
+  vSearch: { en: "Search", tr: "Ara" },
+  vAll: { en: "All", tr: "Tümü" },
+  vNext: { en: "Up next", tr: "Sıradaki" },
+  vNone: { en: "No videos found.", tr: "Video bulunamadı." },
+  vCount: { en: n => `${n} videos · thumbnail design by Burçe Bayar`, tr: n => `${n} video · thumbnail tasarımı: Burçe Bayar` },
+  vFull: { en: "View full size", tr: "Tam boyutta gör" },
+  vHome: { en: "Home", tr: "Ana Sayfa" },
+  vSubs: { en: "Subscriptions", tr: "Abonelikler" },
+  vYou: { en: "You", tr: "Siz" },
+  vMenu: { en: ["Your channel", "History", "Playlists", "Watch later", "Liked videos"], tr: ["Kanalınız", "Geçmiş", "Oynatma listeleri", "Daha sonra izle", "Beğendiğim videolar"] },
+  vCreate: { en: "Create", tr: "Oluştur" }
 };
 const t = (k, ...a) => { const v = L(T[k]); return typeof v === "function" ? v(...a) : v; };
 
@@ -88,6 +100,7 @@ const ICONS = {
   cv: () => `<svg viewBox="0 0 54 46"><path d="M12 1h22l10 10v34H12z" fill="#fff"/><path d="M34 1v10h10" fill="#d9d4e6"/><rect x="6" y="22" width="30" height="14" rx="2" fill="#e5252a"/><text x="21" y="33" font-size="10" text-anchor="middle" fill="#fff" font-family="Arial" font-weight="700">PDF</text></svg>`,
   toxic: () => `<div class="glyph" style="background:#10100F;border:2px solid #E34678;padding:3px"><img src="pyt/img/logo.webp" alt="" style="height:100%;width:auto"></div>`,
   reshoot: () => `<div class="glyph" style="background:linear-gradient(135deg,#922de6,#e815b2 55%,#ffa42b);color:#fff;font-family:'Bagel Fat One';font-size:28px">R</div>`,
+  video: () => `<svg viewBox="0 0 54 46"><path d="M52 12.6a6.6 6.6 0 0 0-4.7-4.7C43.2 6.8 27 6.8 27 6.8s-16.2 0-20.3 1.1A6.6 6.6 0 0 0 2 12.6C1 16.7 1 23 1 23s0 6.3 1 10.4a6.6 6.6 0 0 0 4.7 4.7c4.1 1.1 20.3 1.1 20.3 1.1s16.2 0 20.3-1.1a6.6 6.6 0 0 0 4.7-4.7C53 29.3 53 23 53 23s0-6.3-1-10.4z" fill="#f00"/><path d="M21.8 30.8 35.3 23l-13.5-7.8z" fill="#fff"/></svg>`,
   behance: () => `<div class="glyph" style="background:#1769ff;color:#fff">Bē</div>`,
   linkedin: () => `<div class="glyph" style="background:#0a66c2;color:#fff">in</div>`,
   mail: () => `<svg viewBox="0 0 54 46"><rect x="3" y="7" width="48" height="34" rx="5" fill="${theme() === "burce" ? "#b7f36b" : "#f3f3f3"}"/><path d="M5 10l22 17L49 10" fill="none" stroke="${theme() === "burce" ? "#14061f" : "#2b6fd6"}" stroke-width="3" stroke-linejoin="round"/></svg>`,
@@ -155,7 +168,6 @@ function paintSel() { $$(".icon", iconsEl).forEach(i => i.classList.toggle("sel"
 function setSel(ids) { sel.clear(); ids.forEach(i => sel.add(i)); paintSel(); }
 const iconById = id => iconsEl.querySelector(`.icon[data-id="${id}"]`);
 
-/* masaüstünün boş yerinden sürükleyerek alan seçimi */
 iconsEl.addEventListener("pointerdown", e => {
   if (e.target !== iconsEl || isMobile() || e.button !== 0) return;
   const add = e.ctrlKey || e.metaKey || e.shiftKey, base = add ? new Set(sel) : new Set();
@@ -180,7 +192,6 @@ iconsEl.addEventListener("pointerdown", e => {
   };
 });
 
-/* ikon sürükleme: seçili ikonların hepsi birlikte taşınır */
 function enableIconDrag(el) {
   let block = false;
   el.addEventListener("pointerdown", e => {
@@ -216,12 +227,12 @@ function dropGroup(group, lead) {
   const ids = group.map(g => g.dataset.id), moving = new Set(ids);
   const target = g => [Math.max(0, Math.min(cols - 1, Math.round((g.offsetLeft - PAD) / CELL_W))),
                        Math.max(0, Math.min(rows - 1, Math.round((g.offsetTop - PAD) / CELL_H)))];
-  if (group.length === 1) {                       // tek ikon: dolu yere bırakınca yer değiştir
+  if (group.length === 1) {
     const [c, r] = target(lead), id = lead.dataset.id;
     const other = Object.keys(cells).find(k => k !== id && cells[k][0] === c && cells[k][1] === r);
     if (other) cells[other] = cells[id];
     cells[id] = [c, r];
-  } else {                                         // grup: her ikon en yakın boş hücreye
+  } else {
     const taken = new Set(Object.keys(cells).filter(k => !moving.has(k)).map(k => cells[k].join(",")));
     [lead, ...group.filter(g => g !== lead)].forEach(g => {
       let [c, r] = target(g), best = null;
@@ -311,6 +322,7 @@ function dragWin(win, handle) {
 /* ================= İÇERİK PENCERELERİ ================= */
 function openProject(p) {
   if (p.custom === "toxic") return openToxic(p);
+  if (p.custom === "video") return openVideo(p);
   if (p.type === "case") {
     createWin(p.id, () => ({
       title: p.name, color: p.color, status: t("scenes", p.img.length),
@@ -325,6 +337,99 @@ function openProject(p) {
       bind: el => $$(".thumb", el).forEach(b => b.onclick = () => lightbox(p, +b.dataset.i))
     }), { w: 820, h: 520 });
   }
+}
+
+/* ---------- VIDEO.APP (YouTube benzeri) ---------- */
+/* YouTube ikonları */
+const YI = {"home": "<svg viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M4 21V10.08l8-6.96 8 6.96V21h-6v-6h-4v6H4z\"/></svg>", "shorts": "<svg viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M10 14.65v-5.3L15 12l-5 2.65zm7.77-4.33-1.2-.5L18 9.06a3.74 3.74 0 0 0-3.5-6.62L6 6.94a3.74 3.74 0 0 0 .23 6.74l1.2.49L6 14.93a3.75 3.75 0 0 0 3.5 6.63l8.5-4.5a3.74 3.74 0 0 0-.23-6.74z\"/></svg>", "ch": "<svg viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M4 20h14v1H3V6h1v14zM21 3v15H6V3h15zm-1 1H7v13h13V4zm-6.5 2.5a2 2 0 1 1 0 4 2 2 0 0 1 0-4zm3.5 9h-7c0-2 1.6-3.5 3.5-3.5s3.5 1.5 3.5 3.5z\"/></svg>", "hist": "<svg viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M14.97 16.95 10 13.87V7h2v5.76l4.03 2.49-1.06 1.7zM22 12c0 5.51-4.49 10-10 10S2 17.51 2 12h1c0 4.96 4.04 9 9 9s9-4.04 9-9-4.04-9-9-9C8.81 3 5.92 4.64 4.28 7.38 4.17 7.56 4.06 7.75 3.97 8H8v1H1.96V3h1v4.65C4.81 4.67 8.07 2 12 2c5.51 0 10 4.49 10 10z\"/></svg>", "pl": "<svg viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M22 7H2v1h20V7zm-9 5H2v-1h11v1zm0 4H2v-1h11v1zm2 3v-8l7 4-7 4z\"/></svg>", "later": "<svg viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M14.97 16.95 10 13.87V7h2v5.76l4.03 2.49-1.06 1.7zM12 3c-4.96 0-9 4.04-9 9s4.04 9 9 9 9-4.04 9-9-4.04-9-9-9m0-1c5.52 0 10 4.48 10 10s-4.48 10-10 10S2 17.52 2 12 6.48 2 12 2z\"/></svg>", "like": "<svg viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M18.77 11h-4.23l1.52-4.94C16.38 5.03 15.54 4 14.38 4c-.58 0-1.14.24-1.52.65L7 11H3v10h4h1h9.43c1.06 0 1.98-.67 2.19-1.61l1.34-6C21.23 12.15 20.18 11 18.77 11zM7 20H4v-8h3v8zm12.98-6.83-1.34 6c-.1.48-.61.83-1.21.83H8v-8.61l5.6-6.06c.19-.21.48-.33.78-.33.26 0 .5.11.63.3.07.1.15.26.09.47l-1.52 4.94-.4 1.29h5.58c.41 0 .8.17 1.03.46.13.15.26.4.19.71z\"/></svg>", "mic": "<svg viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M12 3a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3zm6.91 8a.5.5 0 0 0-.5.5 6.41 6.41 0 0 1-12.82 0 .5.5 0 0 0-1 0 7.42 7.42 0 0 0 6.91 7.4V21H9a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1h-2.5v-2.1a7.42 7.42 0 0 0 6.91-7.4.5.5 0 0 0-.5-.5z\"/></svg>", "bell": "<svg viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M10 20h4c0 1.1-.9 2-2 2s-2-.9-2-2zm10-2.65V19H4v-1.65l2-1.88v-5.15C6 7.4 7.56 5.1 10 4.34v-.38c0-1.42 1.49-2.5 2.99-1.76.65.32 1.01 1.03 1.01 1.76v.39c2.44.75 4 3.06 4 5.98v5.15l2 1.87z\"/></svg>", "menu": "<svg viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M21 6H3V5h18v1zm0 5H3v1h18v-1zm0 6H3v1h18v-1z\"/></svg>", "search": "<svg viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"m20.87 20.17-5.59-5.59C16.35 13.35 17 11.75 17 10c0-3.87-3.13-7-7-7s-7 3.13-7 7 3.13 7 7 7c1.75 0 3.35-.65 4.58-1.71l5.59 5.59.7-.71zM10 16c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6z\"/></svg>"};
+const YT_LOGO = `<svg class="yt-wordmark" viewBox="0 0 96 20"><path d="M27.97 3.12A3.6 3.6 0 0 0 25.43.58C23.2 0 14.27 0 14.27 0S5.34 0 3.1.58A3.6 3.6 0 0 0 .58 3.12C0 5.35 0 10 0 10s0 4.65.58 6.88a3.6 3.6 0 0 0 2.53 2.54C5.34 20 14.27 20 14.27 20s8.93 0 11.16-.58a3.6 3.6 0 0 0 2.54-2.54C28.55 14.65 28.55 10 28.55 10s0-4.65-.58-6.88z" fill="#f00"/><path d="M11.42 14.29 18.84 10l-7.42-4.29z" fill="#fff"/><text x="31" y="16.2" fill="currentColor" font-family="Roboto,Arial,sans-serif" font-weight="700" font-size="18" textLength="63" lengthAdjust="spacingAndGlyphs">YouTube</text></svg>`;
+const vState = { view: "home", ch: "all", q: "", cur: 0 };
+function openVideo(p) {
+  const ch = v => CHANNELS[v.ch] || { name: v.ch, avatar: "" };
+  const ava = (v, cls = "") => `<img class="yt-ava ${cls}" src="assets/img/ch/${ch(v).avatar}.webp" alt="${ch(v).name}" loading="lazy">`;
+  const playSet = { name: "YouTube", img: VIDEOS.map(v => v.img) };
+  const list = () => VIDEOS.map((v, i) => ({ v, i })).filter(({ v }) =>
+    (vState.ch === "all" || v.ch === vState.ch) &&
+    (!vState.q || (v.title + " " + ch(v).name).toLocaleLowerCase("tr").includes(vState.q.toLocaleLowerCase("tr"))));
+
+  const homeHTML = () => {
+    const items = list();
+    return `<div class="yt-chips">${[["all", t("vAll")], ...Object.entries(CHANNELS).map(([k, c]) => [k, c.name])]
+        .map(([k, n]) => `<button class="yt-chip${vState.ch === k ? " on" : ""}" data-ch="${k}">${n}</button>`).join("")}</div>
+      ${items.length ? `<div class="yt-grid">${items.map(({ v, i }) => `
+        <button class="yt-card" data-v="${i}">
+          <span class="yt-th"><img src="${IMG(v.img, "thumb")}" alt="${v.title}" loading="lazy"><i class="yt-dur">${v.dur}</i></span>
+          <span class="yt-meta">${ava(v)}<span><b class="yt-title">${v.title}</b><small>${ch(v).name}</small></span></span>
+        </button>`).join("")}</div>` : `<p class="yt-none">${t("vNone")}</p>`}`;
+  };
+  const watchHTML = () => {
+    const v = VIDEOS[vState.cur];
+    return `<div class="yt-watch">
+      <div class="yt-main">
+        <button class="yt-player" data-full title="${t("vFull")}">
+          <img src="${IMG(v.img)}" alt="${v.title}">
+          <span class="yt-play"><svg viewBox="0 0 68 48"><path d="M66.5 7.7a8.5 8.5 0 0 0-6-6C55.3.3 34 .3 34 .3s-21.3 0-26.5 1.4a8.5 8.5 0 0 0-6 6C.1 13 .1 24 .1 24s0 11 1.4 16.3a8.5 8.5 0 0 0 6 6C12.7 47.7 34 47.7 34 47.7s21.3 0 26.5-1.4a8.5 8.5 0 0 0 6-6C67.9 35 67.9 24 67.9 24s0-11-1.4-16.3z" fill="#f00"/><path d="M27 34l18-10-18-10z" fill="#fff"/></svg></span>
+          <span class="yt-bar"><i></i></span>
+          <span class="yt-ctrl"><span>▶ ❙❙</span><span>0:00 / ${v.dur}</span><span class="yt-zoom">⤢ ${t("vFull")}</span></span>
+        </button>
+        <h2 class="yt-h">${v.title}</h2>
+        <div class="yt-chrow">${ava(v, "lg")}<b>${ch(v).name}</b></div>
+      </div>
+      <aside class="yt-side"><h4>${t("vNext")}</h4>${VIDEOS.map((o, i) => i === vState.cur ? "" : `
+        <button class="yt-mini" data-v="${i}">
+          <span class="yt-th"><img src="${IMG(o.img, "thumb")}" alt="${o.title}" loading="lazy"><i class="yt-dur">${o.dur}</i></span>
+          <span><b class="yt-title">${o.title}</b><small>${ch(o).name}</small></span>
+        </button>`).join("")}</aside>
+    </div>`;
+  };
+
+  createWin(p.id, () => ({
+    title: p.name, color: p.color, cls: "yt-win", toolbar: false, status: t("vCount", VIDEOS.length),
+    html: `<div class="yt">
+      <div class="yt-top">
+        <button class="yt-burger" data-burger aria-label="Menu">${YI.menu}</button>
+        <button class="yt-logo" data-home title="YouTube">${YT_LOGO}<sup>TR</sup></button>
+        <div class="yt-mid">
+          <label class="yt-search"><input type="search" placeholder="${t("vSearch")}" value="${vState.q.replace(/"/g, "&quot;")}"><span>${YI.search}</span></label>
+          <button class="yt-round" aria-label="Voice">${YI.mic}</button>
+        </div>
+        <div class="yt-right">
+          <button class="yt-create"><b>＋</b>${t("vCreate")}</button>
+          <button class="yt-round bell" aria-label="Notifications">${YI.bell}<i>9+</i></button>
+          <img class="yt-me" src="assets/img/avatar.webp" alt="">
+        </div>
+      </div>
+      <div class="yt-shell">
+        <nav class="yt-nav">
+          <button class="yt-nl on" data-home>${YI.home}<span>${t("vHome")}</span></button>
+          <button class="yt-nl">${YI.shorts}<span>Shorts</span></button>
+          <hr>
+          <h5>${t("vSubs")} ›</h5>
+          ${Object.entries(CHANNELS).map(([k, c]) => `<button class="yt-nl sub" data-sub="${k}"><img src="assets/img/ch/${c.avatar}.webp" alt=""><span>${c.name}</span><i></i></button>`).join("")}
+          <hr>
+          <h5>${t("vYou")} ›</h5>
+          ${["ch", "hist", "pl", "later", "like"].map((k, i) => `<button class="yt-nl">${YI[k]}<span>${t("vMenu")[i]}</span></button>`).join("")}
+        </nav>
+        <div class="yt-body"></div>
+      </div>
+    </div>`,
+    bind: el => {
+      const body = $(".yt-body", el);
+      const render = () => {
+        body.innerHTML = vState.view === "watch" ? watchHTML() : homeHTML();
+        body.scrollTop = 0;
+        $$("[data-ch]", body).forEach(b => b.onclick = () => { vState.ch = b.dataset.ch; render(); });
+        $$("[data-v]", body).forEach(b => b.onclick = () => { vState.cur = +b.dataset.v; vState.view = "watch"; sfx.open(); render(); });
+        const f = $("[data-full]", body); if (f) f.onclick = () => lightbox(playSet, vState.cur);
+      };
+      $$("[data-home]", el).forEach(b => b.onclick = () => { vState.view = "home"; vState.ch = "all"; render(); });
+      $$("[data-sub]", el).forEach(b => b.onclick = () => { vState.view = "home"; vState.ch = b.dataset.sub; render(); });
+      $("[data-burger]", el).onclick = () => el.classList.toggle("yt-mini-nav");
+      const inp = $(".yt-search input", el);
+      inp.oninput = () => { vState.q = inp.value; vState.view = "home"; render(); };
+      render();
+    }
+  }), { w: 1100, h: 720 });
 }
 
 /* ---------- PICK YOUR TOXIC ---------- */

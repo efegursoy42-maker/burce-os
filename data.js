@@ -7,6 +7,7 @@
    - Duvar kağıtları: assets/img/wp/  (ad.webp + ad_s.webp)
    - CV: assets/cv/Burce-Bayar-CV.pdf (aynı adla üstüne yaz)
    - Pick Your Toxic mini sitesi: pyt/ klasörü (içeriği pyt/pyt.js'te)
+   - YouTube: aşağıdaki CHANNELS + VIDEOS listeleri
    ========================================================= */
 
 const PROFILE = {
@@ -47,11 +48,11 @@ const PROFILE = {
 };
 
 /* type: "folder" → galeri penceresi | type: "case" → vaka çalışması
-   custom: "toxic" → özel PickYourToxic penceresi (aşağıdaki PYT) */
+   custom: "toxic" → PickYourToxic penceresi | custom: "video" → YouTube */
 const PROJECTS = [
   { id: "posts",     no: "01", name: "Instagram Posts", type: "folder", color: "#ff4fb8", img: ["s05", "s06"] },
   { id: "reels",     no: "02", name: "Reels Cover",     type: "folder", color: "#b7f36b", img: ["s07"] },
-  { id: "thumbnail", no: "03", name: "Thumbnail",       type: "folder", color: "#ffa42b", img: ["s08"] },
+  { id: "thumbnail", no: "03", name: "YouTube",         type: "case", custom: "video", color: "#ff3b3b", icon: "video", img: [] },
   { id: "photos",    no: "04", name: "Photos",          type: "folder", color: "#9b5cff", img: ["s09", "s10"] },
   { id: "toxic",     no: "05", name: "PickYourToxic.exe", type: "case", custom: "toxic", color: "#E34678", icon: "toxic",
     img: ["pyt_about", "pyt_chars1", "pyt_chars2", "pyt_menusystem", "pyt_menuspread", "pyt_apps", "pyt_feed"] },
@@ -73,7 +74,6 @@ const PYT = {
     en: "Pick Your Toxic is a fictional cocktail bar where drinks come with personalities. Each cocktail represents a different temptation, mood and character — so the menu is built like a personality catalog. Logo, characters, menu system, applications, social feed and website.",
     tr: "Pick Your Toxic, içeceklerin kişilik taşıdığı kurgusal bir kokteyl barı. Her kokteyl farklı bir cazibeyi, ruh halini ve karakteri temsil ediyor; bu yüzden menü bir kişilik kataloğu gibi kurgulandı. Logo, karakterler, menü sistemi, uygulamalar, sosyal medya akışı ve web sitesi."
   },
-  /* full: karaktere tıklayınca açılan TEK karakter görseli (assets/img/full/) */
   characters: [
     { img: "eros", full: "pyt_ch_eros", name: "Childish Eros", cat: "Sweet Talkers", color: "#E07D91",
       line: { en: "Sweet, emotional and dangerously charming.", tr: "Tatlı, duygusal ve tehlikeli derecede çekici." } },
@@ -92,6 +92,21 @@ const PYT = {
     ["Headline", "Heading Now"], ["Body", "Nimbus Sans Bold Condensed"]
   ]
 };
+
+/* ---------- VIDEO.APP (YouTube thumbnail'ları) ----------
+   Yeni thumbnail: assets/img/full/ad.webp (1280×720) + assets/img/thumb/ad.webp (640×360),
+   sonra VIDEOS listesine bir satır ekle. Kanal logosu: assets/img/ch/ad.webp (kare) */
+const CHANNELS = {
+  klinikkafa:    { name: "Klinik Kafa",       avatar: "klinikkafa" },
+  bendebihalvar: { name: "Bende Bi' Hal Var", avatar: "bendebihalvar" },
+  biarkadas:     { name: "Bi Arkadaş İçin",   avatar: "biarkadas" }
+};
+const VIDEOS = [
+  { img: "yt_tukenir",    ch: "bendebihalvar", dur: "38:24", title: "İnsan Neden Tükenir? | Uzman Psikolog Buse Özdede" },
+  { img: "yt_uyku",       ch: "klinikkafa",    dur: "47:12", title: "Sizden Gelen Sorular! 5 Saat Uykuyla Beyin Formatlanır mı?" },
+  { img: "yt_biarkadas",  ch: "biarkadas",     dur: "21:56", title: "Vitaminlerin Erektil Fonksiyonda Rolü Var mı?" },
+  { img: "yt_idrar",      ch: "klinikkafa",    dur: "52:40", title: "Sizden Gelen Sorular! İdrar Rengi, Tuvalet Sıklığı" }
+];
 
 /* Duvar kağıtları — theme: "burce" | "xp" | "win10" */
 const WALLPAPERS = [
