@@ -8,6 +8,7 @@
    - CV: assets/cv/Burce-Bayar-CV.pdf (aynı adla üstüne yaz)
    - Pick Your Toxic mini sitesi: pyt/ klasörü (içeriği pyt/pyt.js'te)
    - YouTube: aşağıdaki CHANNELS + VIDEOS listeleri
+   - Instagram: aşağıdaki INSTA (postlar assets/img/ig/ içinde, 4:5)
    ========================================================= */
 
 const PROFILE = {
@@ -48,9 +49,9 @@ const PROFILE = {
 };
 
 /* type: "folder" → galeri penceresi | type: "case" → vaka çalışması
-   custom: "toxic" → PickYourToxic penceresi | custom: "video" → YouTube */
+   custom: "toxic" → PickYourToxic | "video" → YouTube | "insta" → Instagram */
 const PROJECTS = [
-  { id: "posts",     no: "01", name: "Instagram Posts", type: "folder", color: "#ff4fb8", img: ["s05", "s06"] },
+  { id: "posts",     no: "01", name: "Instagram",       type: "case", custom: "insta", color: "#E1306C", icon: "insta", img: [] },
   { id: "reels",     no: "02", name: "Reels Cover",     type: "folder", color: "#b7f36b", img: ["s07"] },
   { id: "thumbnail", no: "03", name: "YouTube",         type: "case", custom: "video", color: "#ff3b3b", icon: "video", img: [] },
   { id: "photos",    no: "04", name: "Photos",          type: "folder", color: "#9b5cff", img: ["s09", "s10"] },
@@ -93,7 +94,7 @@ const PYT = {
   ]
 };
 
-/* ---------- VIDEO.APP (YouTube thumbnail'ları) ----------
+/* ---------- YOUTUBE (thumbnail'lar) ----------
    Yeni thumbnail: assets/img/full/ad.webp (1280×720) + assets/img/thumb/ad.webp (640×360),
    sonra VIDEOS listesine bir satır ekle. Kanal logosu: assets/img/ch/ad.webp (kare) */
 const CHANNELS = {
@@ -107,6 +108,18 @@ const VIDEOS = [
   { img: "yt_biarkadas",  ch: "biarkadas",     dur: "21:56", title: "Vitaminlerin Erektil Fonksiyonda Rolü Var mı?" },
   { img: "yt_idrar",      ch: "klinikkafa",    dur: "52:40", title: "Sizden Gelen Sorular! İdrar Rengi, Tuvalet Sıklığı" }
 ];
+
+/* ---------- INSTAGRAM ----------
+   Postlar: assets/img/ig/p01.webp, p02.webp … (4:5, feed'deki sırasıyla).
+   Yeni post eklemek için dosyayı koy ve "posts" sayısını artır.
+   Reels kapakları gelince "reels" listesine eklenecek. */
+const INSTA = {
+  handle: "posts.and.reels",
+  name: "Social Media Design",
+  bio: { en: "Selected posts designed by Burçe Bayar ✿", tr: "Burçe Bayar'ın tasarladığı seçili postlar ✿" },
+  posts: 33,
+  reels: []
+};
 
 /* Duvar kağıtları — theme: "burce" | "xp" | "win10" */
 const WALLPAPERS = [
